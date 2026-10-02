@@ -1,0 +1,1244 @@
+<title>Cómo abre una llave</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Lámina de cerrajería: una columna; el tema claro es el plano en cianotipo lavado, el oscuro es el pasillo de nogal. */
+:root{
+  --bg:#dfe6ec; --bg2:#d1dbe4; --fg:#16304a; --muted:#50677c; --line:#a7b8c6;
+  --accent:#a8731f; --accent-ink:#1d4a7a; --marco:#1d4a7a;
+  --display:"Bricolage Grotesque","Avenir Next Condensed","Arial Narrow",sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#1f150f; --bg2:#2b1d14; --fg:#efe3cc; --muted:#a8947a; --line:#5a4432;
+  --accent:#e0a63e; --accent-ink:#f2d27a; --marco:#0d0806; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#1f150f; --bg2:#2b1d14; --fg:#efe3cc; --muted:#a8947a; --line:#5a4432;
+  --accent:#e0a63e; --accent-ink:#f2d27a; --marco:#0d0806; color-scheme:dark; }
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.5;
+  padding-inline:16px;padding-block:28px 56px}
+.hoja{max-width:1000px;margin:0 auto;display:grid;gap:28px}
+.cab{display:grid;gap:8px;max-width:62ch}
+.ceja{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,60px);line-height:1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.bajada{margin:0;font-size:19px;color:var(--fg)}
+.bajada em{font-style:italic}
+.pelicula{display:grid;gap:10px}
+.marco{position:relative;background:var(--marco);border-radius:6px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#pantalla{display:block;width:100%;height:auto;aspect-ratio:16/9;max-width:100%}
+.velo{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(0,0,0,.18);color:#efe3cc;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:500;font-size:20px;letter-spacing:.04em}
+.velo span{display:inline-flex;align-items:center;gap:14px;padding:12px 22px;border:1.5px solid rgba(239,227,204,.75);border-radius:999px;backdrop-filter:blur(2px)}
+.velo:focus-visible{outline:3px solid var(--accent);outline-offset:-6px}
+.controles{display:flex;align-items:center;gap:10px;min-width:0}
+.controles button{appearance:none;border:1px solid var(--line);background:var(--bg2);color:var(--fg);width:40px;height:36px;border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.controles button:hover{border-color:var(--fg)}
+.controles button:focus-visible,.cap:focus-visible,.barra:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.barra{position:relative;flex:1;height:14px;min-width:0;border-radius:7px;background:var(--bg2);border:1px solid var(--line);cursor:pointer;overflow:hidden}
+#lleno{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent)}
+.barra .pua{position:absolute;top:0;bottom:0;width:1px;background:var(--fg);opacity:.35}
+.reloj{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none;min-width:9ch;text-align:right}
+.dos{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px 40px}
+@media (max-width:720px){.dos{grid-template-columns:1fr}}
+h2{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 10px;color:var(--muted)}
+.escenas{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.cap{appearance:none;width:100%;text-align:left;border:0;border-left:3px solid transparent;background:transparent;color:var(--fg);
+  font:inherit;padding:8px 10px;display:grid;grid-template-columns:9.5ch 1fr;gap:2px 12px;cursor:pointer;border-radius:0 4px 4px 0}
+.cap:hover{background:var(--bg2)}
+.cap[aria-current="true"]{border-left-color:var(--accent);background:var(--bg2)}
+.cap .n{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:4px;font-variant-numeric:tabular-nums}
+.cap .t{font-family:var(--display);font-weight:800;font-size:17px}
+.cap .d{grid-column:2;font-size:15px;color:var(--muted);font-style:italic}
+.nota{display:grid;gap:18px}
+.nota p{margin:0}
+.cifras{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.cifras li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line)}
+.cifras b{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--accent-ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cifras small{display:block;color:var(--muted);font-size:14px}
+.pie{font-size:14px;color:var(--muted);max-width:70ch}
+.pie code{font-family:var(--mono);font-size:13px}
+@media (prefers-reduced-motion: reduce){.velo span{backdrop-filter:none}}
+</style>
+<main class="hoja">
+  <header class="cab">
+    <div class="ceja">Corto dibujado con código · 46 s · 12 cuadros por segundo</div>
+    <h1>Cómo abre una llave</h1>
+    <p class="bajada">Una puerta de noche y un cilindro cortado al medio. Cinco pines partidos en dos, una línea invisible, una llave con cinco dientes y otra que entra pero no gira. <em>La llave no fuerza nada: alinea, y recién ahí gira.</em></p>
+  </header>
+  <section class="pelicula" aria-label="Reproductor">
+    <div class="marco">
+      <canvas id="pantalla" width="1600" height="900" aria-label="Cómo abre una llave, película"></canvas>
+      <button id="velo" class="velo" type="button" aria-label="Reproducir"><span><svg width="18" height="20" viewBox="0 0 15 16" aria-hidden="true"><path d="M2 1 L13.5 8 L2 15 Z" fill="currentColor"/></svg>Ver la película</span></button>
+    </div>
+    <div class="controles">
+      <button id="btnPlay" type="button" aria-label="Reproducir"></button>
+      <button id="btnVolver" type="button" aria-label="Volver al principio"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v12M13 2 5 8l8 6z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
+      <div id="barra" class="barra" role="slider" tabindex="0" aria-label="Posición en la película" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="lleno"></div></div>
+      <span id="reloj" class="reloj">0:00 / 0:45</span>
+      <button id="btnSon" type="button" aria-label="Silenciar" aria-pressed="false"></button>
+    </div>
+  </section>
+  <div class="dos">
+    <section aria-labelledby="h-esc">
+      <h2 id="h-esc">Escenas</h2>
+      <ol id="escenas" class="escenas"></ol>
+    </section>
+    <section class="nota" aria-labelledby="h-que">
+      <div>
+        <h2 id="h-que">Lo que muestra</h2>
+        <ul class="cifras">
+          <li><span>Pines del cilindro, cada uno en dos partes: pin de llave abajo, contrapín arriba, resorte encima.<small>Los contrapines son todos iguales; los pines de llave tienen el largo que pide cada diente.</small></span><b>5</b></li>
+          <li><span>Alturas posibles por diente en la llave de la película.<small>El código de la llave justa es 3·5·1·4·2: altura 1 es el diente más chico y el pin más corto. La otra llave es 1·5·1·6·2: un pin queda alto y otro bajo.</small></span><b>6</b></li>
+          <li><span>Llaves distintas con 5 pines y 6 alturas, en teoría.<small>6 × 6 × 6 × 6 × 6. Una sola pone las cinco junturas en la línea de corte. Los cilindros reales usan 7 o 10 alturas (Kwikset, Schlage) y las fábricas descartan los saltos muy grandes entre dientes vecinos.</small></span><b>7776</b></li>
+          <li><span>Año de la patente de Linus Yale Jr. para el cilindro de pines con llave plana (US 48.475).<small>Su padre había patentado los pines partidos en 1844; el cilindro moderno es el de 1865.</small></span><b>1865</b></li>
+          <li><span>Vuelta del tambor en esta cerradura: un cuarto. La leva de su cola retrae el pestillo.<small>Los contrapines quedan apoyados sobre el tambor; nada cruza la línea. Otros cilindros giran media vuelta o una entera.</small></span><b>90°</b></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Cómo está hecha</h2>
+        <p class="pie">Cada cuadro se dibuja con JavaScript sobre un canvas de 1600 × 900: no hay video ni imágenes. El trazo tiembla con un azar sembrado, así que la película sale igual cada vez. Los pines suben y bajan de verdad: su altura se calcula sobre el perfil de cada llave a medida que entra, y por eso la otra llave traba sola, sin trampa. Las seis alturas son seis notas de una escala pentatónica: el código 3·5·1·4·2 es la melodía que suena cuando entra la llave justa y vuelve al final; la otra llave toca la suya, que empieza distinto. Hay un sonido por idea: golpe sordo cuando traba, clic cuando gira, campana cuando los cinco pines quedan en la línea. Está escrita a 12 cuadros por segundo, como se animaba a mano.</p>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+/* =====================================================================
+   NÚCLEO — motor de películas dibujadas cuadro por cuadro.
+   Copiar tal cual. Debajo, la película: paletas, escenas, línea de tiempo.
+   ===================================================================== */
+var W=1600,H=900,FPS=12;
+var cv=document.getElementById('pantalla'), ctx=cv.getContext('2d');
+/* ---------- azar con semilla (mulberry32) ---------- */
+function rng(s){var a=s>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var FR=0;                                   // cuadro actual (para el temblor)
+function boil(base){return (base*7919 + Math.floor(FR/2)*104729)>>>0;}  // cambia cada 2 cuadros
+function lerp(a,b,t){return a+(b-a)*t;}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function ease(t){return t<0?0:t>1?1:t*t*(3-2*t);}
+function easeOut(t){return 1-Math.pow(1-clamp(t,0,1),3);}
+function easeIn(t){return Math.pow(clamp(t,0,1),2.4);}
+function al(hex,a){var n=parseInt(hex.slice(1),16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+
+/* ---------- paletas: dos mundos, mismas claves ----------
+   sombra = la sombra que deja el canto de la hoja; canto = el borde iluminado;
+   rejilla = el cuadriculado (sólo si grid:1).                            */
+var CIELO={id:'c',bg:'#101725',bg2:'#182137',bg3:'#0a0f1c',grano:'#33405c',
+  tinta:'#e9e3d3',dim:'#93a0b8',ambar:'#e5a747',oxido:'#cd6047',cons:'#7fa6c9',
+  sombra:'#05080f',canto:'#2a3a56',rejilla:'#5f7391',seed:11,grid:0};
+var PAPEL={id:'p',bg:'#dcd3bd',bg2:'#cfc5ae',bg3:'#efe9da',grano:'#8f8a76',
+  tinta:'#28304a',dim:'#7d7a6b',ambar:'#a8641f',oxido:'#b0442c',cons:'#5b6d88',
+  sombra:'#3a3529',canto:'#efe9da',rejilla:'#5f7391',seed:23,grid:1};
+
+/* ---------- papel (se dibuja una sola vez) ---------- */
+function makePaper(p){
+  var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+  x.fillStyle=p.bg;x.fillRect(0,0,W,H);
+  var r=rng(p.seed),i,j;
+  for(i=0;i<110;i++){                                  // manchas suaves
+    var mx=r()*W,my=r()*H,mr=50+r()*230;
+    var g=x.createRadialGradient(mx,my,0,mx,my,mr);
+    g.addColorStop(0,al(r()<0.5?p.bg2:p.bg3,p.grid?0.22:0.5));g.addColorStop(1,al(p.bg2,0));
+    x.fillStyle=g;x.fillRect(mx-mr,my-mr,mr*2,mr*2);
+  }
+  if(p.grid){                                          // cuadriculado del cuaderno
+    x.strokeStyle=al(p.rejilla,0.3);x.lineWidth=1;
+    for(i=0;i<=W;i+=44){x.beginPath();x.moveTo(i+0.5,0);x.lineTo(i+0.5,H);x.stroke();}
+    for(j=2;j<=H;j+=44){x.beginPath();x.moveTo(0,j+0.5);x.lineTo(W,j+0.5);x.stroke();}
+    x.strokeStyle=al(p.rejilla,0.4);
+    for(i=0;i<=W;i+=220){x.beginPath();x.moveTo(i+0.5,0);x.lineTo(i+0.5,H);x.stroke();}
+    for(j=2;j<=H;j+=220){x.beginPath();x.moveTo(0,j+0.5);x.lineTo(W,j+0.5);x.stroke();}
+  }
+  for(i=0;i<16000;i++){                                // grano
+    var gx=r()*W,gy=r()*H,a=0.03+r()*0.1;
+    x.fillStyle=al(r()<0.62?p.grano:p.bg3,a);
+    x.fillRect(gx,gy,1+(r()<0.12?1:0),1);
+  }
+  for(i=0;i<220;i++){                                  // fibras
+    var fx=r()*W,fy=r()*H,fa=r()*Math.PI,fl=6+r()*26;
+    x.strokeStyle=al(r()<0.5?p.grano:p.bg3,0.07+r()*0.1);x.lineWidth=0.7+r()*0.6;
+    x.beginPath();x.moveTo(fx,fy);
+    x.quadraticCurveTo(fx+Math.cos(fa)*fl*0.5-3+r()*6,fy+Math.sin(fa)*fl*0.5-3+r()*6,
+                       fx+Math.cos(fa)*fl,fy+Math.sin(fa)*fl);x.stroke();
+  }
+  var v=x.createRadialGradient(W*0.5,H*0.46,H*0.24,W*0.5,H*0.5,H*1.02);  // viñeta
+  v.addColorStop(0,al(p.bg3,0));v.addColorStop(1,al(p.bg3,p.grid?0.42:0.62));
+  x.fillStyle=v;x.fillRect(0,0,W,H);
+  return c;
+}
+var PAPERS={};
+function lamina(p){if(!PAPERS[p.id])PAPERS[p.id]=makePaper(p);return PAPERS[p.id];}
+function paper(p,k){        // k>1 acerca la cámara sobre la hoja
+  var im=lamina(p);
+  if(!k||k<=1.001){ctx.drawImage(im,0,0);return;}
+  ctx.save();ctx.translate(W/2,H/2);ctx.scale(k,k);ctx.drawImage(im,-W/2,-H/2);ctx.restore();
+}
+
+/* ---------- trazo a mano ---------- */
+function resample(pts,step){
+  var out=[],i,j;
+  for(i=0;i<pts.length-1;i++){
+    var a=pts[i],b=pts[i+1],d=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.max(1,Math.round(d/step));
+    for(j=0;j<n;j++){var t=j/n;out.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]);}
+  }
+  out.push(pts[pts.length-1]);return out;
+}
+function jitter(pts,amp,seed){
+  var r=rng(seed),out=[],i;
+  for(i=0;i<pts.length;i++){
+    var e=(i===0||i===pts.length-1)?0.5:1;
+    out.push([pts[i][0]+(r()*2-1)*amp*e,pts[i][1]+(r()*2-1)*amp*e]);
+  }
+  return out;
+}
+function cut(pts,f){
+  if(f>=1)return pts; if(f<=0)return null;
+  var tot=0,seg=[],i;
+  for(i=0;i<pts.length-1;i++){var d=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);seg.push(d);tot+=d;}
+  var want=tot*f,acc=0,out=[pts[0]];
+  for(i=0;i<seg.length;i++){
+    if(acc+seg[i]>=want||i===seg.length-1){
+      var t=seg[i]?clamp((want-acc)/seg[i],0,1):1;
+      out.push([lerp(pts[i][0],pts[i+1][0],t),lerp(pts[i][1],pts[i+1][1],t)]);break;
+    }
+    acc+=seg[i];out.push(pts[i+1]);
+  }
+  return out.length>1?out:null;
+}
+function pathOf(c,pts,close){
+  var i;c.beginPath();
+  if(pts.length<3){c.moveTo(pts[0][0],pts[0][1]);for(i=1;i<pts.length;i++)c.lineTo(pts[i][0],pts[i][1]);}
+  else{
+    c.moveTo(pts[0][0],pts[0][1]);
+    for(i=1;i<pts.length-1;i++)c.quadraticCurveTo(pts[i][0],pts[i][1],
+      (pts[i][0]+pts[i+1][0])/2,(pts[i][1]+pts[i+1][1])/2);
+    c.lineTo(pts[pts.length-1][0],pts[pts.length-1][1]);
+  }
+  if(close)c.closePath();
+}
+/* o: color, w, amp, seed, close, alpha, dash, step, frac, pasadas */
+function trazo(pts,o){
+  o=o||{}; if(!pts||pts.length<2)return;
+  var p=resample(pts,o.step||16);
+  p=jitter(p,o.amp===undefined?1.5:o.amp,boil(o.seed||1));
+  if(o.frac!==undefined){p=cut(p,o.frac);if(!p)return;}
+  ctx.save();
+  ctx.strokeStyle=o.color||'#e9e3d3';ctx.lineWidth=o.w||2;
+  ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.globalAlpha=o.alpha===undefined?1:o.alpha;
+  if(o.dash)ctx.setLineDash(o.dash);
+  var n=o.pasadas||1,k;
+  for(k=0;k<n;k++){
+    if(k){var q=jitter(p,0.9,boil((o.seed||1)+97*k));pathOf(ctx,q,o.close);}
+    else pathOf(ctx,p,o.close);
+    if(k)ctx.globalAlpha=(o.alpha===undefined?1:o.alpha)*0.55;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+function relleno(pts,o){
+  o=o||{};var p=jitter(resample(pts,o.step||18),o.amp===undefined?1.2:o.amp,boil(o.seed||2));
+  ctx.save();ctx.fillStyle=o.color;ctx.globalAlpha=o.alpha===undefined?1:o.alpha;
+  pathOf(ctx,p,true);ctx.fill();ctx.restore();
+}
+/* trama: líneas paralelas recortadas a un polígono */
+function trama(pts,o){
+  o=o||{};var ang=(o.ang===undefined?-0.6:o.ang),gap=o.gap||9;
+  var xs=pts.map(function(q){return q[0];}),ys=pts.map(function(q){return q[1];});
+  var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs);
+  var y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+  var cx=(x0+x1)/2,cy=(y0+y1)/2,rad=Math.hypot(x1-x0,y1-y0)/2+8;
+  ctx.save();pathOf(ctx,jitter(resample(pts,20),1.4,boil(o.seed||3)),true);ctx.clip();
+  ctx.strokeStyle=o.color;ctx.lineWidth=o.w||1.1;ctx.lineCap='round';
+  ctx.globalAlpha=o.alpha===undefined?0.5:o.alpha;
+  var r=rng(boil(o.seed||3)),d;
+  for(d=-rad;d<=rad;d+=gap){
+    var ox=Math.cos(ang),oy=Math.sin(ang);
+    var ax=cx-oy*d-ox*rad,ay=cy+ox*d-oy*rad;
+    var bx=cx-oy*d+ox*rad,by=cy+ox*d+oy*rad;
+    var p=jitter(resample([[ax,ay],[bx,by]],26),1.6,(r()*1e9)>>>0);
+    pathOf(ctx,p,false);ctx.stroke();
+  }
+  ctx.restore();
+}
+/* ---------- luces: cualquier punto que brilla (lámpara, chispa, ciudad, estrella) ---------- */
+function luz(x,y,r,col,seed,glow){
+  if(x<-40||x>W+40||y<-40||y>H+40)return;
+  var rr=rng(seed),wob=0.85+rr()*0.3,g;
+  if(glow>0){
+    var R=r*3.4+3.5;
+    g=ctx.createRadialGradient(x,y,r*0.6,x,y,R);
+    g.addColorStop(0,al(col,0.30*glow));g.addColorStop(0.5,al(col,0.07*glow));g.addColorStop(1,al(col,0));
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,R,0,6.2832);ctx.fill();
+  }
+  ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r*wob,0,6.2832);ctx.fill();
+  if(r>1.7){
+    ctx.save();ctx.strokeStyle=col;ctx.lineWidth=Math.max(0.7,r*0.26);ctx.lineCap='round';
+    ctx.globalAlpha=0.7;var L=r*(2.9+rr()*1.1),a0=rr()*0.5;
+    ctx.beginPath();
+    ctx.moveTo(x-Math.cos(a0)*L,y-Math.sin(a0)*L);ctx.lineTo(x+Math.cos(a0)*L,y+Math.sin(a0)*L);
+    ctx.moveTo(x-Math.cos(a0+1.5708)*L*0.66,y-Math.sin(a0+1.5708)*L*0.66);
+    ctx.lineTo(x+Math.cos(a0+1.5708)*L*0.66,y+Math.sin(a0+1.5708)*L*0.66);
+    ctx.stroke();ctx.restore();
+  }
+}
+function circulo(x,y,r,o){
+  var pts=[],i,n=Math.max(10,Math.round(r*0.9));
+  for(i=0;i<=n;i++){var a=i/n*6.2832;pts.push([x+Math.cos(a)*r,y+Math.sin(a)*r]);}
+  trazo(pts,o);
+}
+/* rótulo con línea de guía */
+function rotulo(px,py,dx,dy,txt,size,o){
+  o=o||{};var f=o.frac===undefined?1:o.frac;
+  if(f<=0)return;
+  var d=Math.hypot(dx,dy),ux=dx/d,uy=dy/d,r0=o.r0||16;
+  trazo([[px+ux*r0,py+uy*r0],[px+dx,py+dy]],
+    {color:o.color,w:o.lw||1.4,amp:1,seed:o.seed||9,alpha:(o.alpha||1)*0.8,frac:clamp(f*1.8,0,1)});
+  if(f>0.35)texto(txt,px+dx+(dx>=0?12:-12),py+dy+size*0.36,size,
+    {color:o.color,align:dx>=0?'l':'r',seed:(o.seed||9)+7,frac:clamp((f-0.35)/0.5,0,1),
+     alpha:o.alpha,w:o.tw,track:o.track});
+}
+/* marca de punto señalado: circulito + punto */
+function marca(p,r,col,seed,f){
+  if(!p||f<=0)return;
+  circulo(p[0],p[1],r,{color:col,w:1.6,amp:0.9,seed:seed,frac:clamp(f*1.5,0,1)});
+  if(f>0.5){ctx.fillStyle=col;ctx.beginPath();ctx.arc(p[0],p[1],r*0.28,0,6.2832);ctx.fill();}
+}
+/* =====================================================================
+   Alfabeto de un solo trazo — se escribe a mano, letra por letra.
+   x:0..ancho   y:0 (altura de mayúscula) .. 100 (línea de base)
+   ===================================================================== */
+var GL={
+ 'A':[62,[[2,100,31,0,60,100],[14,62,48,62]]],
+ 'B':[56,[[0,0,0,100],[0,0,38,8,42,40,4,50],[4,50,46,60,48,92,0,100]]],
+ 'C':[60,[[56,14,32,0,10,20,5,52,12,84,34,100,58,86]]],
+ 'D':[58,[[0,0,0,100],[0,0,34,10,50,50,34,92,0,100]]],
+ 'E':[52,[[50,0,0,0,0,100,52,100],[0,50,38,50]]],
+ 'F':[50,[[48,0,0,0,0,100],[0,50,36,50]]],
+ 'G':[60,[[56,14,32,0,10,20,5,52,12,84,36,100,58,84,58,54,34,54]]],
+ 'H':[54,[[0,0,0,100],[52,0,52,100],[0,52,52,52]]],
+ 'I':[20,[[10,0,10,100]]],
+ 'J':[46,[[44,0,44,76,30,98,8,88]]],
+ 'K':[54,[[0,0,0,100],[46,0,4,56],[14,46,52,100]]],
+ 'L':[46,[[0,0,2,100,46,98]]],
+ 'M':[68,[[0,100,6,0,34,66,62,0,68,100]]],
+ 'N':[56,[[0,100,2,0,54,100,56,0]]],
+ 'O':[62,[[32,0,10,18,4,52,12,86,34,100,54,84,60,50,50,14,32,0]]],
+ 'P':[54,[[0,100,0,0,42,8,46,40,2,54]]],
+ 'Q':[62,[[32,0,10,18,4,52,12,86,34,100,54,84,60,50,50,14,32,0],[36,74,64,108]]],
+ 'R':[56,[[0,100,0,0,42,8,46,40,2,52],[16,50,52,100]]],
+ 'S':[54,[[52,12,26,0,6,18,14,42,42,56,50,78,28,100,4,88]]],
+ 'T':[52,[[0,2,52,0],[26,2,26,100]]],
+ 'U':[54,[[0,0,2,74,26,100,50,74,52,0]]],
+ 'V':[56,[[0,0,28,100,56,0]]],
+ 'W':[76,[[0,0,16,100,38,36,58,100,76,0]]],
+ 'X':[54,[[0,0,52,100],[52,0,0,100]]],
+ 'Y':[56,[[0,0,28,52,56,0],[28,52,28,100]]],
+ 'Z':[54,[[0,2,52,0,2,98,54,100]]],
+ '0':[52,[[26,0,6,20,4,52,10,84,28,100,46,82,50,50,44,16,26,0]]],
+ '1':[30,[[2,18,16,0,16,100]]],
+ '2':[52,[[4,18,24,0,46,12,44,40,4,100,50,98]]],
+ '3':[52,[[4,10,26,0,46,14,38,46,12,50],[38,46,52,70,32,100,4,88]]],
+ '4':[54,[[38,0,2,72,52,72],[38,0,38,100]]],
+ '5':[52,[[48,0,8,2,4,44,26,38,46,52,48,78,26,100,2,90]]],
+ '6':[52,[[46,8,24,0,8,26,4,60,10,88,30,100,46,86,48,62,30,52,10,60]]],
+ '7':[50,[[0,2,50,0,20,100]]],
+ '8':[54,[[30,50,10,40,8,16,28,0,48,14,46,38,30,50,50,62,52,88,28,100,6,86,8,62,30,50]]],
+ '9':[52,[[48,40,30,50,10,42,6,18,26,0,44,10,50,42,44,76,26,100,6,94]]],
+ ' ':[34,[]],
+ '.':[22,[[10,98,12,98]]],
+ ',':[24,[[12,92,6,112]]],
+ ':':[22,[[10,36,12,36],[10,96,12,96]]],
+ '·':[24,[[10,52,12,52]]],
+ '-':[42,[[4,54,38,54]]],
+ '/':[42,[[38,0,4,100]]],
+ '(':[28,[[22,-4,6,30,6,70,22,104]]],
+ ')':[28,[[6,-4,22,30,22,70,6,104]]],
+ '!':[22,[[11,0,9,68],[10,94,12,94]]],
+ '¡':[22,[[11,100,13,32],[12,6,10,6]]],
+ '?':[48,[[6,22,18,2,38,6,42,26,24,44,22,64],[22,94,24,94]]],
+ '¿':[48,[[42,78,30,98,10,94,6,74,24,56,26,36],[26,6,24,6]]],
+ '°':[32,[[16,4,7,11,7,23,16,30,25,23,25,11,16,4]]],
+ '×':[46,[[7,34,39,70],[39,34,7,70]]],
+ '±':[52,[[6,32,46,32],[26,14,26,50],[6,74,46,74]]],
+ '+':[50,[[6,50,44,50],[25,31,25,69]]],
+ '½':[86,[[6,14,17,4,17,48],[56,0,22,58],[42,60,52,53,63,62,60,78,42,98,68,96]]],
+ '′':[22,[[15,0,6,28]]],
+ '…':[60,[[6,98,8,98],[28,98,30,98],[50,98,52,98]]]
+};
+var ACC={'Á':'A','É':'E','Í':'I','Ó':'O','Ú':'U'};
+function glifo(ch){
+  if(GL[ch])return GL[ch];
+  if(ACC[ch]){
+    var b=GL[ACC[ch]],w=b[0],st=b[1].slice();
+    st.push([w*0.30,-20,w*0.66,-40]);
+    return [w,st];
+  }
+  if(ch==='Ñ'){var n=GL['N'],s2=n[1].slice();
+    s2.push([4,-26,18,-40,38,-24,56,-38]);return [n[0],s2];}
+  return GL[' '];
+}
+function anchoTexto(s,size,track){
+  var k=size/100,t=(track===undefined?0.16:track)*size,w=0,i;
+  s=s.toUpperCase();
+  for(i=0;i<s.length;i++)w+=glifo(s[i])[0]*k+t;
+  return w-t;
+}
+/* o: color,w,seed,align('l'|'c'|'r'),track,frac,alpha,amp,pasadas,rot */
+function texto(s,x,y,size,o){
+  o=o||{};s=s.toUpperCase();
+  var k=size/100,t=(o.track===undefined?0.16:o.track)*size;
+  var tot=anchoTexto(s,size,o.track);
+  var ox=o.align==='c'?x-tot/2:o.align==='r'?x-tot:x;
+  var strokes=[],i,j,g,st,pts,cur=ox;
+  for(i=0;i<s.length;i++){
+    g=glifo(s[i]);
+    for(j=0;j<g[1].length;j++){
+      st=g[1][j];pts=[];
+      for(var m=0;m<st.length;m+=2)pts.push([cur+st[m]*k,y+st[m+1]*k]);
+      strokes.push(pts);
+    }
+    cur+=g[0]*k+t;
+  }
+  var lens=[],total=0;
+  for(i=0;i<strokes.length;i++){
+    var L=0;for(j=0;j<strokes[i].length-1;j++)
+      L+=Math.hypot(strokes[i][j+1][0]-strokes[i][j][0],strokes[i][j+1][1]-strokes[i][j][1]);
+    L=Math.max(L,size*0.1);lens.push(L);total+=L;
+  }
+  var f=o.frac===undefined?1:clamp(o.frac,0,1),want=total*f,acc=0;
+  ctx.save();
+  if(o.rot){ctx.translate(x,y);ctx.rotate(o.rot);ctx.translate(-x,-y);}
+  for(i=0;i<strokes.length;i++){
+    if(acc>=want)break;
+    var lf=clamp((want-acc)/lens[i],0,1);acc+=lens[i];
+    trazo(strokes[i],{color:o.color,w:o.w||Math.max(1.1,size*0.085),amp:o.amp===undefined?size*0.018:o.amp,
+      seed:(o.seed||7)+i*31,alpha:o.alpha,frac:lf,step:Math.max(5,size*0.16),pasadas:o.pasadas});
+  }
+  ctx.restore();
+  return tot;
+}
+
+/* =====================================================================
+   Línea de tiempo y transiciones. TL lo define la película.
+   ===================================================================== */
+var INI=[],DUR=0,TOTALF=0,TRD=0.44;
+var buf1=null,buf2=null;
+function buf(){var b=document.createElement('canvas');b.width=W;b.height=H;return b;}
+function pintarEn(c,fn,t){var viejo=ctx;ctx=c;fn(t);ctx=viejo;}
+function bordeRoto(y,seed){
+  var r=rng(seed),p=[],x;
+  for(x=-40;x<=W+40;x+=38)p.push([x,y+(r()*2-1)*9+Math.sin(x*0.011+seed)*4]);
+  return p;
+}
+function escenaDe(t){var k=0;while(k<TL.length-1&&t>=INI[k+1])k++;return k;}
+function drawFrame(i){
+  FR=i;
+  var t=Math.min(i/FPS,DUR-0.0001), k=escenaDe(t), lt=t-INI[k], sc=TL[k];
+  if(sc.tr&&lt<TRD&&k>0){
+    if(!buf1){buf1=buf();buf2=buf();}
+    var b1=buf1.getContext('2d'),b2=buf2.getContext('2d');
+    b1.clearRect(0,0,W,H);b2.clearRect(0,0,W,H);
+    pintarEn(b1,sc.f,lt);                        // escena nueva
+    pintarEn(b2,TL[k-1].f,TL[k-1].d-0.001);      // último cuadro de la anterior
+    var u=ease(lt/TRD), nueva=sc.p||CIELO, vieja=TL[k-1].p||CIELO;
+    if(sc.tr==='sube'){                          // la hoja sube y tapa lo anterior
+      var dy=(1-u)*H, e=bordeRoto(dy,77);
+      ctx.drawImage(buf2,0,0);
+      ctx.save();
+      ctx.beginPath();ctx.moveTo(-60,H+80);
+      for(var m=0;m<e.length;m++)ctx.lineTo(e[m][0],e[m][1]);
+      ctx.lineTo(W+60,H+80);ctx.closePath();ctx.clip();
+      ctx.drawImage(buf1,0,dy);
+      ctx.restore();
+      trazo(e,{color:vieja.sombra,w:3,amp:0.6,seed:78,alpha:0.7,step:40});
+      trazo(e.map(function(q){return [q[0],q[1]+3];}),
+        {color:nueva.canto,w:1.6,amp:0.5,seed:79,alpha:0.5,step:40});
+    }else{                                       // la hoja se va para arriba
+      var dy2=-u*H, e2=bordeRoto(H+dy2,77);
+      ctx.drawImage(buf1,0,0);
+      ctx.save();
+      ctx.beginPath();ctx.moveTo(-60,-80);
+      for(var m2=0;m2<e2.length;m2++)ctx.lineTo(e2[m2][0],e2[m2][1]);
+      ctx.lineTo(W+60,-80);ctx.closePath();ctx.clip();
+      ctx.drawImage(buf2,0,dy2);
+      ctx.restore();
+      trazo(e2,{color:nueva.sombra,w:3,amp:0.6,seed:78,alpha:0.6,step:40});
+      trazo(e2.map(function(q){return [q[0],q[1]-3];}),
+        {color:vieja.canto,w:1.6,amp:0.5,seed:79,alpha:0.45,step:40});
+    }
+  }else{
+    sc.f(lt);
+  }
+}
+/* =====================================================================
+   Partitura. La película la llena con ev(t,tipo,a,b,c):
+   campana(frec,dur,vol) bajo(frec,dur,vol) tic(frec,dur,vol)
+   lapiz(-,dur,vol) hoja(-,dur,vol) aire(-,dur,vol) swell(mult,dur,vol)
+   ===================================================================== */
+var PART=[];
+function ev(t,tipo,a,b,c){PART.push({t:t,k:tipo,a:a,b:b,c:c});}
+function reverb(a){
+  var len=Math.floor(a.sampleRate*2.8),b=a.createBuffer(2,len,a.sampleRate),ch,i;
+  for(ch=0;ch<2;ch++){var d=b.getChannelData(ch),r=rng(7+ch*5);
+    for(i=0;i<len;i++)d[i]=(r()*2-1)*Math.pow(1-i/len,2.8)*0.7;}
+  var c=a.createConvolver();c.buffer=b;return c;
+}
+function grafo(a){
+  var m=a.createGain();m.gain.value=0.92;
+  var lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=7200;
+  var rv=reverb(a),send=a.createGain();send.gain.value=0.42;
+  var out=a.createGain();out.gain.value=1.7;    // medido: con 1.7 el pico queda en ~55 %
+  m.connect(lp);lp.connect(out);m.connect(send);send.connect(rv);rv.connect(out);
+  out.connect(a.destination);
+  return m;
+}
+function tono(a,m,t,f,d,v,tipo,nodos){
+  var o=a.createOscillator(),g=a.createGain();
+  o.type=tipo||'sine';o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(Math.max(v,0.0003),t+(tipo==='triangle'?0.5:0.014));
+  g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  o.connect(g);g.connect(m);o.start(t);o.stop(t+d+0.08);if(nodos)nodos.push(o);
+}
+function ruidoEv(a,m,t,d,v,f,q,nodos,sube){
+  var len=Math.max(1,Math.floor(a.sampleRate*d)),b=a.createBuffer(1,len,a.sampleRate);
+  var dd=b.getChannelData(0),r=rng((Math.floor(t*997)+13)>>>0),i;
+  for(i=0;i<len;i++)dd[i]=(r()*2-1);
+  var s=a.createBufferSource();s.buffer=b;
+  var bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.setValueAtTime(f,t);
+  if(sube)bp.frequency.exponentialRampToValueAtTime(f*sube,t+d);
+  bp.Q.value=q;
+  var g=a.createGain();g.gain.setValueAtTime(0.0001,t);
+  g.gain.linearRampToValueAtTime(v,t+d*0.3);g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  s.connect(bp);bp.connect(g);g.connect(m);s.start(t);s.stop(t+d+0.02);if(nodos)nodos.push(s);
+}
+function programar(a,m,desde,ahora,nodos){
+  for(var i=0;i<PART.length;i++){
+    var e=PART[i],t=ahora+(e.t-desde),dur=e.b;
+    if(e.k==='bajo'){
+      if(e.t+e.b<desde)continue;
+      if(e.t<desde){dur=e.t+e.b-desde;t=ahora+0.02;}
+    } else if(e.t<desde-0.02)continue;
+    if(e.k==='campana')tono(a,m,t,e.a,e.b,e.c,'sine',nodos);
+    else if(e.k==='bajo'){tono(a,m,t,e.a,dur,e.c,'triangle',nodos);}
+    else if(e.k==='tic')ruidoEv(a,m,t,e.b,e.c,e.a,7,nodos);
+    else if(e.k==='lapiz')ruidoEv(a,m,t,e.b,e.c,1900,1.1,nodos,2.4);
+    else if(e.k==='hoja')ruidoEv(a,m,t,e.b,e.c*0.09,700,0.8,nodos,3.2);
+    else if(e.k==='aire')ruidoEv(a,m,t,e.b,e.c,320,1.6,nodos,1.8);
+    else if(e.k==='swell'){tono(a,m,t,110*e.a,e.b,0.09*e.c,'triangle',nodos);
+                           tono(a,m,t,165*e.a,e.b,0.05*e.c,'sine',nodos);}
+  }
+}
+
+/* ===================== Reproductor ===================== */
+var AC=null,MST=null,nodos=[],tiempo=0,ultimo=-1,corriendo=false,t0pared=0,t0film=0,mudo=false;
+var velo=document.getElementById('velo'),btnPlay=document.getElementById('btnPlay'),
+    btnVolver=document.getElementById('btnVolver'),btnSon=document.getElementById('btnSon'),
+    barra=document.getElementById('barra'),lleno=document.getElementById('lleno'),
+    reloj=document.getElementById('reloj'),listaEsc=document.getElementById('escenas');
+var ICO={
+ play:'<svg width="15" height="16" viewBox="0 0 15 16" aria-hidden="true"><path d="M2 1 L13.5 8 L2 15 Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>',
+ pausa:'<svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M4 1v14M10 1v14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+ son:'<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true"><path d="M2 6h3l4-3.5v11L5 10H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M12 5.2a4 4 0 0 1 0 5.6M14.6 3a7.4 7.4 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>',
+ mudo:'<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true"><path d="M2 6h3l4-3.5v11L5 10H2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M12 5.5l4.5 5M16.5 5.5l-4.5 5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'
+};
+btnPlay.innerHTML=ICO.play;btnSon.innerHTML=ICO.son;
+function mmss(s){var m=Math.floor(s/60),g=Math.floor(s%60);return m+':'+(g<10?'0':'')+g;}
+function pintar(t){
+  var fi=Math.min(Math.floor(t*FPS),TOTALF-1);
+  if(fi!==ultimo){ultimo=fi;drawFrame(fi);}
+}
+function audioOn(){
+  if(mudo)return null;
+  if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();MST=grafo(AC);}
+          catch(e){return null;}}
+  if(AC.state==='suspended')AC.resume();
+  return AC;
+}
+function audioStop(){
+  for(var i=0;i<nodos.length;i++){try{nodos[i].stop(0);}catch(e){}}
+  nodos=[];
+}
+function audioDesde(t){
+  audioStop();var a=audioOn();
+  if(a&&MST)programar(a,MST,t,a.currentTime+0.08,nodos);
+}
+function play(){
+  if(corriendo)return;
+  if(tiempo>=DUR-0.02)tiempo=0;
+  corriendo=true;t0pared=performance.now();t0film=tiempo;
+  velo.hidden=true;btnPlay.innerHTML=ICO.pausa;btnPlay.setAttribute('aria-label','Pausar');
+  audioDesde(tiempo);
+}
+function pausa(dejar){
+  if(!corriendo)return;
+  corriendo=false;if(!dejar)audioStop();nodos=dejar?[]:nodos;
+  btnPlay.innerHTML=ICO.play;btnPlay.setAttribute('aria-label','Reproducir');
+}
+function irA(t,seguir){
+  tiempo=clamp(t,0,DUR-0.001);
+  if(corriendo){t0pared=performance.now();t0film=tiempo;audioDesde(tiempo);}
+  pintar(tiempo);ui();
+  if(seguir&&!corriendo)play();
+}
+function ui(){
+  var p=tiempo/DUR;
+  lleno.style.width=(p*100).toFixed(2)+'%';
+  barra.setAttribute('aria-valuenow',Math.round(p*100));
+  reloj.textContent=mmss(tiempo)+' / '+mmss(DUR);
+  var k=escenaDe(Math.min(tiempo,DUR-0.001));
+  for(var i=0;i<caps.length;i++)caps[i].setAttribute('aria-current',i===k?'true':'false');
+}
+var caps=[];
+function lazo(){
+  if(corriendo){
+    tiempo=t0film+(performance.now()-t0pared)/1000;
+    if(tiempo>=DUR){tiempo=DUR-0.001;pintar(tiempo);pausa(true);velo.hidden=false;ui();}
+    else{pintar(tiempo);ui();}
+  }
+  requestAnimationFrame(lazo);
+}
+velo.addEventListener('click',function(){if(tiempo>=DUR-0.02||!corriendo){irA(0,false);play();}});
+btnPlay.addEventListener('click',function(){corriendo?pausa():play();});
+btnVolver.addEventListener('click',function(){irA(0,false);});
+btnSon.addEventListener('click',function(){
+  mudo=!mudo;btnSon.innerHTML=mudo?ICO.mudo:ICO.son;
+  btnSon.setAttribute('aria-pressed',mudo?'true':'false');
+  btnSon.setAttribute('aria-label',mudo?'Activar sonido':'Silenciar');
+  if(mudo)audioStop(); else if(corriendo)audioDesde(tiempo);
+});
+cv.addEventListener('click',function(){corriendo?pausa():play();});
+function desdeEvento(e){
+  var r=barra.getBoundingClientRect(),x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+  return clamp(x/r.width,0,1)*DUR;
+}
+var arrastre=false;
+barra.addEventListener('pointerdown',function(e){arrastre=true;barra.setPointerCapture(e.pointerId);
+  irA(desdeEvento(e));});
+barra.addEventListener('pointermove',function(e){if(arrastre)irA(desdeEvento(e));});
+barra.addEventListener('pointerup',function(e){arrastre=false;});
+barra.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'){irA(tiempo+1);e.preventDefault();}
+  if(e.key==='ArrowLeft'){irA(tiempo-1);e.preventDefault();}
+});
+document.addEventListener('keydown',function(e){
+  var t=e.target;
+  if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'))return;
+  if(e.key===' '||e.key==='k'){corriendo?pausa():play();e.preventDefault();}
+  else if(e.key==='ArrowRight'&&t===document.body){irA(tiempo+1);e.preventDefault();}
+  else if(e.key==='ArrowLeft'&&t===document.body){irA(tiempo-1);e.preventDefault();}
+});
+/* arrancar(poster): la película llama a esto al final, con TL y PART ya
+   definidos. poster = segundo que se muestra quieto antes de reproducir. */
+function arrancar(poster){
+  var i,j;
+  for(i=0;i<TL.length;i++){INI.push(DUR);DUR+=TL[i].d;}
+  TOTALF=Math.round(DUR*FPS);
+  PART.sort(function(x,y){return x.t-y.t;});
+  var frag=document.createDocumentFragment();
+  for(i=0;i<TL.length;i++){
+    var li=document.createElement('li'),b=document.createElement('button');
+    b.type='button';b.className='cap';
+    b.innerHTML='<span class="n">'+TL[i].n+' · '+mmss(INI[i])+'</span>'+
+      '<span class="t">'+TL[i].nom+'</span><span class="d">'+TL[i].txt+'</span>';
+    (function(k){b.addEventListener('click',function(){irA(INI[k]+0.001,true);});})(i);
+    li.appendChild(b);frag.appendChild(li);caps.push(b);
+  }
+  listaEsc.appendChild(frag);
+  for(j=1;j<TL.length;j++){
+    var d=document.createElement('div');d.className='pua';
+    d.style.left=(INI[j]/DUR*100)+'%';barra.appendChild(d);
+  }
+  tiempo=poster||0;pintar(tiempo);tiempo=0;ultimo=-1;ui();
+  requestAnimationFrame(lazo);
+  window.__film={W:W,H:H,FPS:FPS,DUR:DUR,TOTALF:TOTALF,
+    dibujar:function(i){drawFrame(i);},wav:renderWav};
+}
+function renderWav(){
+  var OC=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+  var a=new OC(2,Math.ceil(44100*(DUR+3)),44100),m=grafo(a);
+  programar(a,m,0,0.05,null);
+  return a.startRendering().then(function(b){
+    var n=b.length,ch=2,bytes=44+n*ch*2,ab=new ArrayBuffer(bytes),dv=new DataView(ab),o=0,i,c;
+    function s(str){for(var j=0;j<str.length;j++)dv.setUint8(o++,str.charCodeAt(j));}
+    s('RIFF');dv.setUint32(o,bytes-8,true);o+=4;s('WAVEfmt ');
+    dv.setUint32(o,16,true);o+=4;dv.setUint16(o,1,true);o+=2;dv.setUint16(o,ch,true);o+=2;
+    dv.setUint32(o,44100,true);o+=4;dv.setUint32(o,44100*ch*2,true);o+=4;
+    dv.setUint16(o,ch*2,true);o+=2;dv.setUint16(o,16,true);o+=2;s('data');
+    dv.setUint32(o,n*ch*2,true);o+=4;
+    var d0=b.getChannelData(0),d1=b.numberOfChannels>1?b.getChannelData(1):d0;
+    for(i=0;i<n;i++)for(c=0;c<2;c++){var v=clamp(c?d1[i]:d0[i],-1,1);
+      dv.setInt16(o,v<0?v*32768:v*32767,true);o+=2;}
+    var u=new Uint8Array(ab),bin='',K=0x8000;
+    for(i=0;i<u.length;i+=K)bin+=String.fromCharCode.apply(null,u.subarray(i,i+K));
+    return btoa(bin);
+  });
+}
+
+/* =====================================================================
+   PELÍCULA — «Cómo abre una llave»
+   ---------------------------------------------------------------------
+   ESCALETA (tiempos absolutos en segundos; 45,8 s, 9 escenas)
+   inicio dur  escena           mundo    cámara        qué cambia                                        qué se escribe                                       qué suena
+    0.0  4.2  I   La puerta     PASILLO  fija          puerta cerrada, lámpara; entra la llave            CÓMO ABRE / UNA LLAVE                                pasos, bajo, tintineo
+    4.2  5.6  II  Por dentro    PLANO    fija          se dibuja el cilindro cortado al medio y A-A       CARCASA: FIJA · CONTRAPINES · RESORTES · LÍNEA DE     hoja, lápiz por rótulo
+                                                                                                          CORTE · TAMBOR: GIRA · PINES · cajetín
+    9.8  4.4  III Trabado       PLANO    fija          contrapines cruzan (óxido); el tambor intenta      SIN LLAVE, LOS CONTRAPINES / CRUZAN LA LÍNEA. /       golpe sordo = trabado
+                                                       girar en A-A, choca, X                             EL TAMBOR NO GIRA.
+   14.2  5.8  IV  La llave justa PLANO   fija          entra 3·5·1·4·2; los pines suben y caen; la línea  CADA DIENTE DEJA SU PIN / JUSTO EN LA LÍNEA.          roce, 5 notas (el código),
+                                                       se enciende                                        NADA LA CRUZA.                                        campana = alineado
+   20.0  4.6  V   Gira          PLANO    zoom a A-A    el tambor gira un cuarto de vuelta; contrapines    EL TAMBOR GIRA. / LOS CONTRAPINES QUEDAN ARRIBA. · 90° aire, clic = gira
+                                                       quedan arriba
+   24.6  4.0  VI  Se abre       PASILLO  fija          la llave gira (clic), el pestillo entra, la puerta GIRA. / EL PESTILLO ENTRA.                            clic, pestillo, crujido
+   28.6  5.2  VII La otra llave PLANO    fija          hoja nueva; entra 1·5·1·6·2: un pin cruza arriba,  OTRA LLAVE: 1·5·1·6·2 / UNO ARRIBA, OTRO ABAJO.       melodía equivocada,
+                                                       un contrapín abajo; choca, X                       NO GIRA.                                              golpe sordo
+   33.8  6.4  VIII Las cuentas  PLANO    baja 900 px   la misma hoja, más abajo: llave grande, código,    ESTA LLAVE: 6 ALTURAS POR PIN / 6×6×6×6×6 = 7776      6 alturas, código,
+                                                       grilla 5×6, la cuenta                              LLAVES / UNA SOLA ALINEA LOS CINCO / (EN TEORÍA)      campana
+   40.2  5.6  IX  Cierre        PASILLO  fija          puerta abierta, llave puesta, firma                LA LLAVE / NO FUERZA NADA. / ALINEA, · Y GIRA.        melodía de la llave, acorde
+   ===================================================================== */
+
+/* ---------- los dos mundos ---------- */
+var PASILLO={id:'a',bg:'#2b1d14',bg2:'#3a2a1c',bg3:'#1a110b',grano:'#6a4f38',
+  tinta:'#efe3cc',dim:'#a8947a',ambar:'#e0a63e',oxido:'#c9654a',cons:'#8aa0b4',
+  sombra:'#0d0806',canto:'#7a5a3e',rejilla:'#6a4f38',seed:41,grid:0};
+var PLANO={id:'z',bg:'#1d4a7a',bg2:'#245a91',bg3:'#153a61',grano:'#7fa3c8',
+  tinta:'#eef3f8',dim:'#a9c1da',ambar:'#f2d27a',oxido:'#f09a7a',cons:'#cfe0f0',
+  sombra:'#0d2742',canto:'#5f86b0',rejilla:'#9dbbd8',seed:31,grid:1};
+GL['=']=[46,[[6,40,40,40],[6,64,40,64]]];   // el alfabeto del núcleo no trae el igual
+
+/* ---------- geometría del cilindro (hoja 1600×900) ---------- */
+var YSH=400;                       // línea de corte
+var HX0=170,HX1=930,HY0=250;       // carcasa (arriba de la línea), cara en HX0
+var PY1=548;                       // fondo del tambor
+var KW0=466,KW1=532,KWEND=900;     // canal de la llave
+var CHT=272,CHW=44;                // tope y ancho de cámara
+var CHX=[330,440,550,660,770];     // cámaras
+var BIT=[3,5,1,4,2];               // código de dientes de la llave justa
+var BIT2=[1,5,1,6,2];              // la otra llave: el 1.º diente más chico (pin más alto), el 4.º más hondo (pin más bajo)
+var STEP=9,LD=70,PW=16;            // px por altura, largo del contrapín, media meseta
+var LK=[];(function(){for(var i=0;i<5;i++)LK.push(KW0+STEP*BIT[i]-YSH);})();
+var SHO=HX0,TIP=850,LHOJA=TIP-SHO; // hombro y punta de la llave metida del todo
+var PC=(YSH+PY1)/2;                // centro del tambor en el corte
+var EVX=1180,EVY=470,EVR=102,EVRP=(PY1-YSH)/2,EVTW=52;   // vista A-A, misma escala; torre de la carcasa
+var LEVA={x0:HX1,x1:HX1+32,y0:PC-34,y1:PC+34};
+var NOTAS=[220,261.63,293.66,329.63,392,440];   // las seis alturas, en pentatónica
+var ESCR=function(n){return 0.4+0.045*n;};      // cuánto tarda en escribirse un rótulo de n letras
+var S0=720;                                     // corrida de la llave cuando está afuera del todo
+
+/* ---------- la llave ---------- */
+function topLocal(x,bit){           // superficie superior de la hoja (0 = sin cortar), x desde el hombro
+  if(x<0||x>LHOJA)return 0;
+  var y=0,i;
+  for(i=0;i<5;i++){var cx=CHX[i]-SHO,yc=STEP*bit[i],dx=Math.abs(x-cx);
+    var yy=dx<=PW?yc:yc-(dx-PW);if(yy>y)y=yy;}
+  if(x>LHOJA-22){var yt=(x-(LHOJA-22))*1.2;if(yt>y)y=yt;}
+  return y;
+}
+function fondoPin(i,s,bit){         // y absoluta donde apoya el pin i con la llave corrida s px (null: sin llave)
+  if(s===null)return KW1;
+  var xl=CHX[i]-SHO+s;if(xl>LHOJA||xl<0)return KW1;
+  return Math.min(KW1,KW0+topLocal(xl,bit||BIT));
+}
+function poligonoLlave(bit){        // coordenadas locales: hombro en (0,0), y hacia abajo
+  var p=[],x;
+  for(x=0;x<=LHOJA;x+=6)p.push([x,topLocal(x,bit)]);
+  p.push([LHOJA,topLocal(LHOJA,bit)]);p.push([LHOJA,52]);p.push([LHOJA-12,66]);p.push([0,66]);
+  p.push([-4,80]);p.push([-26,100]);p.push([-70,102]);p.push([-98,76]);p.push([-100,-8]);
+  p.push([-76,-34]);p.push([-30,-36]);p.push([-6,-16]);p.push([0,0]);
+  return p;
+}
+var LLAVE1=poligonoLlave(BIT),LLAVE2=poligonoLlave(BIT2);
+function llave(ox,oy,ang,k,o){      // hombro en (ox,oy), rotada ang, escala k; o: frac, alpha, p, seed, pol
+  o=o||{};var c=Math.cos(ang),s=Math.sin(ang),P=o.p||PLANO,sd=o.seed||120,pol=o.pol||LLAVE1;
+  function T(q){return [ox+(q[0]*c-q[1]*s)*k,oy+(q[0]*s+q[1]*c)*k];}
+  var pts=pol.map(T),f=o.frac===undefined?1:o.frac;
+  if(f<=0)return;
+  relleno(pts,{color:P.ambar,alpha:(o.alpha===undefined?0.92:o.alpha)*clamp(f*1.3-0.3,0,1),seed:sd+1,amp:0.9,step:10});
+  trazo(pts,{color:P.tinta,w:o.w||1.8,close:true,seed:sd,amp:1,frac:f,alpha:o.alpha,step:10});
+  var oj=T([-56,34]);
+  circulo(oj[0],oj[1],12*k,{color:P.tinta,w:1.4,seed:sd+2,frac:clamp(f*1.5-0.5,0,1),alpha:o.alpha});
+}
+function cabezaFrontal(x,y,ang,k,o){   // la cabeza de la llave vista de frente (puesta en la cerradura), girada ang
+  o=o||{};var P=o.p||PASILLO,c=Math.cos(ang),s=Math.sin(ang),pts=[],i,n=22;
+  for(i=0;i<=n;i++){var a=i/n*6.2832,px=Math.cos(a)*20*k,py=Math.sin(a)*28*k;
+    if(py<-14*k)px*=0.72;pts.push([x+px*c-py*s,y+px*s+py*c]);}
+  relleno(pts,{color:P.ambar,alpha:0.95*(o.alpha===undefined?1:o.alpha),seed:131,amp:0.7,step:8});
+  trazo(pts,{color:P.tinta,w:1.6,close:true,seed:130,amp:0.8,alpha:o.alpha,step:8});
+  circulo(x-(-16*k)*s,y+(-16*k)*c,5*k,{color:P.tinta,w:1.3,seed:132,alpha:o.alpha});
+}
+
+/* ---------- papel alto: la segunda hoja del plano mide 1600×1800 y la cámara baja ---------- */
+function makePaperAlto(p){
+  var H2=H*2,c=document.createElement('canvas');c.width=W;c.height=H2;var x=c.getContext('2d');
+  x.fillStyle=p.bg;x.fillRect(0,0,W,H2);
+  var r=rng(p.seed+100),i,j;
+  for(i=0;i<220;i++){var mx=r()*W,my=r()*H2,mr=50+r()*230,g=x.createRadialGradient(mx,my,0,mx,my,mr);
+    g.addColorStop(0,al(r()<0.5?p.bg2:p.bg3,p.grid?0.22:0.5));g.addColorStop(1,al(p.bg2,0));x.fillStyle=g;x.fillRect(mx-mr,my-mr,mr*2,mr*2);}
+  if(p.grid){x.strokeStyle=al(p.rejilla,0.3);x.lineWidth=1;
+    for(i=0;i<=W;i+=44){x.beginPath();x.moveTo(i+0.5,0);x.lineTo(i+0.5,H2);x.stroke();}
+    for(j=2;j<=H2;j+=44){x.beginPath();x.moveTo(0,j+0.5);x.lineTo(W,j+0.5);x.stroke();}
+    x.strokeStyle=al(p.rejilla,0.4);
+    for(i=0;i<=W;i+=220){x.beginPath();x.moveTo(i+0.5,0);x.lineTo(i+0.5,H2);x.stroke();}
+    for(j=2;j<=H2;j+=220){x.beginPath();x.moveTo(0,j+0.5);x.lineTo(W,j+0.5);x.stroke();}}
+  for(i=0;i<32000;i++){var gx=r()*W,gy=r()*H2,a=0.03+r()*0.1;x.fillStyle=al(r()<0.62?p.grano:p.bg3,a);x.fillRect(gx,gy,1+(r()<0.12?1:0),1);}
+  for(i=0;i<440;i++){var fx=r()*W,fy=r()*H2,fa=r()*Math.PI,fl=6+r()*26;
+    x.strokeStyle=al(r()<0.5?p.grano:p.bg3,0.07+r()*0.1);x.lineWidth=0.7+r()*0.6;x.beginPath();x.moveTo(fx,fy);
+    x.quadraticCurveTo(fx+Math.cos(fa)*fl*0.5-3+r()*6,fy+Math.sin(fa)*fl*0.5-3+r()*6,fx+Math.cos(fa)*fl,fy+Math.sin(fa)*fl);x.stroke();}
+  var v=x.createRadialGradient(W*0.5,H,H*0.5,W*0.5,H,H*1.55);
+  v.addColorStop(0,al(p.bg3,0));v.addColorStop(1,al(p.bg3,p.grid?0.42:0.62));x.fillStyle=v;x.fillRect(0,0,W,H2);
+  return c;
+}
+function laminaAlta(p){var k=p.id+'alto';if(!PAPERS[k])PAPERS[k]=makePaperAlto(p);return PAPERS[k];}
+function hojaCam(p,k,cx,cy){  // la hoja normal vista por una cámara (k>1 acerca; cx,cy = centro)
+  var im=lamina(p);ctx.save();ctx.translate(W/2,H/2);ctx.scale(k,k);ctx.translate(-cx,-cy);ctx.drawImage(im,0,0);ctx.restore();
+}
+
+/* ---------- trama con recorte nítido (la carcasa, el tambor, el anillo) ---------- */
+function tramaClip(pathFn,o){
+  o=o||{};var ang=o.ang===undefined?-0.7:o.ang,gap=o.gap||10;
+  if((o.alpha===undefined?1:o.alpha)<=0)return;
+  ctx.save();ctx.beginPath();pathFn(ctx);ctx.clip('evenodd');
+  ctx.strokeStyle=o.color;ctx.lineWidth=o.w||1.1;ctx.lineCap='round';
+  ctx.globalAlpha=o.alpha===undefined?0.45:o.alpha;
+  var cx=o.cx,cy=o.cy,rad=o.rad,r=rng(boil(o.seed||5)),d,ox=Math.cos(ang),oy=Math.sin(ang);
+  for(d=-rad;d<=rad;d+=gap){
+    var ax=cx-oy*d-ox*rad,ay=cy+ox*d-oy*rad,bx=cx-oy*d+ox*rad,by=cy+ox*d+oy*rad;
+    var p=jitter(resample([[ax,ay],[bx,by]],30),0.9,(r()*1e9)>>>0);
+    pathOf(ctx,p,false);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/* ---------- piezas del corte ---------- */
+function pin(x,y0,y1,w,tipo,seed,f,col,alpha){   // cápsula vertical; 'llave' con punta abajo
+  if(f<=0||y1-y0<4)return;
+  var h=w/2,p;
+  if(tipo==='llave')p=[[x-h,y0+2],[x-h+3,y0],[x+h-3,y0],[x+h,y0+2],[x+h,y1-13],[x+5,y1],[x-5,y1],[x-h,y1-13]];
+  else p=[[x-h,y0+3],[x-h+4,y0],[x+h-4,y0],[x+h,y0+3],[x+h,y1-3],[x+h-4,y1],[x-h+4,y1],[x-h,y1-3]];
+  relleno(p,{color:col,alpha:0.85*(alpha===undefined?1:alpha)*clamp(f*2-1,0,1),seed:seed+1,amp:0.7,step:9});
+  trazo(p,{color:PLANO.tinta,w:1.5,close:true,seed:seed,amp:0.8,frac:f,step:9,alpha:alpha});
+}
+function resorte(x,y0,y1,seed,f,alpha){
+  if(f<=0||y1-y0<6)return;
+  var n=7,p=[[x,y0]],i;for(i=1;i<n;i++)p.push([x+(i%2?12:-12),y0+(y1-y0)*i/n]);p.push([x,y1]);
+  trazo(p,{color:PLANO.dim,w:1.6,amp:0.6,seed:seed,frac:f,step:7,alpha:alpha});
+}
+function cruzaOxido(x,y0,y1,f,seed,alpha){   // el tramo de pin que cruza la línea, pintado de óxido
+  if(f<=0||Math.abs(y1-y0)<2)return;var hh=(CHW-8)/2,a=Math.min(y0,y1),b=Math.max(y0,y1);
+  relleno([[x-hh,a],[x+hh,a],[x+hh,b],[x-hh,b]],{color:PLANO.oxido,alpha:0.78*f*(alpha===undefined?1:alpha),seed:seed,amp:0.5,step:8});
+}
+function clipCarcasa(c){var i;c.rect(HX0,HY0,HX1-HX0,YSH-HY0);
+  for(i=0;i<5;i++)c.rect(CHX[i]-CHW/2,CHT,CHW,YSH-CHT);}
+function clipTambor(c){var i;c.rect(HX0,YSH,HX1-HX0,PY1-YSH);c.rect(HX0,KW0,KWEND-HX0,KW1-KW0);
+  for(i=0;i<5;i++)c.rect(CHX[i]-CHW/2,YSH,CHW,KW0-YSH);
+  c.rect(LEVA.x0,LEVA.y0,LEVA.x1-LEVA.x0,LEVA.y1-LEVA.y0);}
+/* s: llave corrida (null = sin llave); g: fracciones {cuerpo,camaras,pines,linea}; o: {alpha, bit, pol, lineaAmbar, cruz} */
+function corte(s,g,o){
+  o=o||{};var i,A=o.alpha===undefined?1:o.alpha,P=PLANO,bit=o.bit||BIT;
+  tramaClip(clipCarcasa,{color:P.dim,gap:11,ang:-0.7,cx:(HX0+HX1)/2,cy:(HY0+YSH)/2,rad:410,seed:51,alpha:0.42*A*clamp(g.cuerpo*1.6-0.6,0,1)});
+  tramaClip(clipTambor,{color:P.cons,gap:9,ang:0.6,cx:(HX0+HX1)/2,cy:(YSH+PY1)/2,rad:410,seed:52,alpha:0.28*A*clamp(g.cuerpo*1.6-0.7,0,1)});
+  var w2=1.9;
+  trazo([[HX0,YSH],[HX0,HY0],[HX1,HY0],[HX1,YSH]],{color:P.tinta,w:w2,seed:53,frac:g.cuerpo,alpha:A});
+  trazo([[HX0,YSH],[HX0,PY1],[HX1,PY1],[HX1,YSH]],{color:P.tinta,w:w2,seed:54,frac:g.cuerpo,alpha:A});
+  trazo([[LEVA.x0,LEVA.y0],[LEVA.x1,LEVA.y0],[LEVA.x1,LEVA.y1],[LEVA.x0,LEVA.y1]],{color:P.tinta,w:1.6,seed:55,frac:clamp(g.cuerpo*1.5-0.5,0,1),alpha:A});
+  trazo([[HX0,KW1],[KWEND,KW1],[KWEND,KW0]],{color:P.tinta,w:1.5,seed:56,frac:g.camaras,alpha:A});
+  var xs=HX0;
+  for(i=0;i<5;i++){trazo([[xs,KW0],[CHX[i]-CHW/2,KW0]],{color:P.tinta,w:1.5,seed:57+i,frac:g.camaras,alpha:A});xs=CHX[i]+CHW/2;}
+  trazo([[xs,KW0],[KWEND,KW0]],{color:P.tinta,w:1.5,seed:63,frac:g.camaras,alpha:A});
+  for(i=0;i<5;i++)trazo([[CHX[i]-CHW/2,KW0],[CHX[i]-CHW/2,CHT],[CHX[i]+CHW/2,CHT],[CHX[i]+CHW/2,KW0]],
+    {color:P.tinta,w:1.5,seed:70+i,frac:clamp(g.camaras*1.4-i*0.08,0,1),alpha:A});
+  if(s!==null)llave(SHO-s,KW0,0,1,{frac:1,alpha:A,seed:120,pol:o.pol||LLAVE1});
+  for(i=0;i<5;i++){
+    var fb=fondoPin(i,s,bit),ft=fb-LK[i],fp=clamp(g.pines*1.5-i*0.1,0,1);
+    pin(CHX[i],ft,fb,CHW-8,'llave',80+i*3,fp,P.ambar,A);
+    pin(CHX[i],ft-LD,ft,CHW-8,'contra',81+i*3,fp,P.cons,A);
+    resorte(CHX[i],CHT,ft-LD,82+i*3,fp,A);
+    if(o.cruz){var cf=clamp(o.cruz*1.6-i*0.15,0,1);
+      if(ft>YSH+1)cruzaOxido(CHX[i],YSH,ft,cf,90+i,A);        // el contrapín cruza hacia abajo
+      else if(ft<YSH-1)cruzaOxido(CHX[i],ft,YSH,cf,90+i,A);   // el pin de llave cruza hacia arriba
+    }
+  }
+  trazo([[HX0-6,YSH],[HX1+6,YSH]],{color:P.cons,w:1.7,dash:[14,9],seed:100,frac:g.linea,alpha:A,amp:0.8,step:12});
+  if(o.lineaAmbar>0){
+    trazo([[HX0-6,YSH],[HX1+6,YSH]],{color:P.ambar,w:7,seed:101,alpha:0.28*o.lineaAmbar*A,amp:0.6,step:12});
+    trazo([[HX0-6,YSH],[HX1+6,YSH]],{color:P.ambar,w:2.2,seed:102,alpha:0.95*o.lineaAmbar*A,amp:0.6,step:12});
+  }
+}
+/* marca del plano de corte A-A: sólo los extremos, como en los planos */
+function marcaAA(f,alpha){
+  if(f<=0)return;var x=CHX[0],P=PLANO;
+  trazo([[x,HY0-34],[x,HY0-6]],{color:P.tinta,w:2.2,seed:110,frac:f,alpha:alpha});
+  trazo([[x,PY1+6],[x,PY1+34]],{color:P.tinta,w:2.2,seed:111,frac:f,alpha:alpha});
+  trazo([[x-14,HY0-20],[x,HY0-34],[x+14,HY0-20]],{color:P.tinta,w:1.6,seed:112,frac:f,alpha:alpha});
+  trazo([[x-14,PY1+20],[x,PY1+34],[x+14,PY1+20]],{color:P.tinta,w:1.6,seed:113,frac:f,alpha:alpha});
+  texto('A',x+22,HY0-18,22,{color:P.tinta,seed:114,frac:clamp(f*2-1,0,1),alpha:alpha});
+  texto('A',x+22,PY1+36,22,{color:P.tinta,seed:115,frac:clamp(f*2-1,0,1),alpha:alpha});
+}
+/* vista A-A (de frente, cortada por la primera cámara), misma escala que el corte: la carcasa es un círculo con una torre.
+   th = giro del tambor; s = llave; g = {anillo,tambor,piezas}; o = {alpha, bit, lineaAmbar, choque} */
+var CARCASA_FRONTAL=(function(){
+  var cx=EVX,cy=EVY,yt=EVY+(HY0-PC),t0=Math.acos(EVTW/EVR),pts=[[cx-EVTW,yt]],n=40,i;
+  for(i=0;i<=n;i++){var a=(Math.PI+t0)-(Math.PI+2*t0)*i/n;pts.push([cx+Math.cos(a)*EVR,cy+Math.sin(a)*EVR]);}
+  pts.push([cx+EVTW,yt]);return pts;
+})();
+function vistaFrontal(th,s,g,o){
+  o=o||{};var cx=EVX,cy=EVY,P=PLANO,A=o.alpha===undefined?1:o.alpha,hw=CHW/2,bit=o.bit||BIT;
+  function Y(y){return cy+(y-PC);}
+  if(g.anillo<=0)return;
+  tramaClip(function(c){var q=CARCASA_FRONTAL;c.moveTo(q[0][0],q[0][1]);for(var k=1;k<q.length;k++)c.lineTo(q[k][0],q[k][1]);c.closePath();
+    c.moveTo(cx+EVRP,cy);c.arc(cx,cy,EVRP,0,6.2832);c.rect(cx-hw,Y(CHT),2*hw,Y(YSH)-Y(CHT));},
+    {color:P.dim,gap:11,ang:-0.7,cx:cx,cy:cy,rad:250,seed:140,alpha:0.42*A*clamp(g.anillo*1.6-0.6,0,1)});
+  trazo(CARCASA_FRONTAL,{color:P.tinta,w:2,seed:141,frac:g.anillo,alpha:A,amp:1.1,close:true,step:14});
+  var fb=fondoPin(0,s,bit),ft=fb-LK[0];
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(th);ctx.translate(-cx,-cy);
+  tramaClip(function(c){c.arc(cx,cy,EVRP,0,6.2832);c.rect(cx-hw,Y(YSH),2*hw,Y(KW0)-Y(YSH));
+    c.rect(cx-15,Y(KW0),30,Y(KW1)-Y(KW0));},
+    {color:P.cons,gap:9,ang:0.6,cx:cx,cy:cy,rad:EVRP+8,seed:142,alpha:0.28*A*clamp(g.tambor*1.6-0.7,0,1)});
+  circulo(cx,cy,EVRP,{color:P.tinta,w:1.8,seed:143,frac:g.tambor,alpha:A,amp:1});
+  trazo([[cx-hw,Y(YSH)],[cx-hw,Y(KW0)],[cx-15,Y(KW0)],[cx-15,Y(KW1)],[cx+15,Y(KW1)],[cx+15,Y(KW0)],[cx+hw,Y(KW0)],[cx+hw,Y(YSH)]],
+    {color:P.tinta,w:1.5,seed:144,frac:g.piezas,alpha:A,step:8});
+  if(s!==null&&fb<KW1){   // sección de la hoja: del diente al fondo del canal, con su ondulación
+    var y0=Y(fb),y1=Y(KW1),q=[[cx-12,y0],[cx+12,y0],[cx+12,y0+(y1-y0)*0.35],[cx+7,y0+(y1-y0)*0.5],[cx+12,y0+(y1-y0)*0.65],[cx+12,y1],[cx-12,y1],[cx-12,y0+(y1-y0)*0.7],[cx-6,y0+(y1-y0)*0.55],[cx-12,y0+(y1-y0)*0.3]];
+    relleno(q,{color:P.ambar,alpha:0.9*A,seed:146,amp:0.6,step:8});
+    trazo(q,{color:P.tinta,w:1.4,close:true,seed:145,amp:0.7,step:8,alpha:A});
+  }
+  pin(cx,Y(ft),Y(fb),CHW-8,'llave',147,g.piezas,P.ambar,A);
+  if(o.cruz&&ft<YSH-1)cruzaOxido(cx,Y(ft),Y(YSH),o.cruz,96,A);
+  ctx.restore();
+  trazo([[cx-hw,Y(YSH)],[cx-hw,Y(CHT)],[cx+hw,Y(CHT)],[cx+hw,Y(YSH)]],{color:P.tinta,w:1.5,seed:148,frac:g.piezas,alpha:A,step:8});
+  var dt=ft;if(th>0.001&&Math.abs(ft-YSH)<0.5)dt=YSH;   // con la llave justa, al girar el contrapín apoya sobre el tambor
+  pin(cx,Y(dt-LD),Y(dt),CHW-8,'contra',149,g.piezas,P.cons,A);
+  if(o.cruz&&dt>YSH+1)cruzaOxido(cx,Y(YSH),Y(dt),o.cruz,97,A);
+  resorte(cx,Y(CHT),Y(dt-LD),150,g.piezas,A);
+  circulo(cx,cy,EVRP,{color:P.cons,w:1.6,dash:[12,8],seed:151,frac:g.tambor,alpha:A,amp:0.6});
+  if(o.lineaAmbar>0){circulo(cx,cy,EVRP,{color:P.ambar,w:6,seed:152,alpha:0.25*o.lineaAmbar*A,amp:0.5});
+    circulo(cx,cy,EVRP,{color:P.ambar,w:2,seed:153,alpha:0.9*o.lineaAmbar*A,amp:0.5});}
+  if(o.choque>0){   // el punto donde el tambor choca contra lo que cruza la línea
+    var px=cx+hw+2,py=Y(YSH),k;
+    for(k=0;k<5;k++){var a=-0.9+k*0.45,L=14+(k%2)*8;
+      trazo([[px+Math.cos(a)*6,py+Math.sin(a)*6],[px+Math.cos(a)*L,py+Math.sin(a)*L]],{color:P.oxido,w:2.2,seed:160+k,alpha:o.choque*A,amp:0.6,step:6});}
+  }
+}
+/* flecha de giro alrededor de un centro, de a0 a a1 (radianes), con punta */
+function flechaArco(cx,cy,r,a0,a1,o){
+  var pts=[],n=24,i;for(i=0;i<=n;i++){var a=a0+(a1-a0)*i/n;pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);}
+  trazo(pts,o);
+  var f=o.frac===undefined?1:o.frac;if(f<0.95)return;
+  var a=a1,dir=a1>a0?1:-1,tx=cx+Math.cos(a)*r,ty=cy+Math.sin(a)*r,ux=-Math.sin(a)*dir,uy=Math.cos(a)*dir;
+  trazo([[tx-ux*14+Math.cos(a)*9,ty-uy*14+Math.sin(a)*9],[tx,ty],[tx-ux*14-Math.cos(a)*9,ty-uy*14-Math.sin(a)*9]],{color:o.color,w:o.w,seed:(o.seed||1)+5,alpha:o.alpha});
+}
+/* intento de giro en la vista A-A: flecha, tambor que se mueve unos grados y vuelve, choque y cruz */
+function intentoGiro(t,t0){
+  var P=PLANO,fa=clamp((t-t0)/0.5,0,1),fx=clamp((t-t0-1.1)/0.4,0,1);
+  flechaArco(EVX,EVY,EVR+16,-0.95,-0.15,{color:P.oxido,w:2.4,seed:290,frac:fa});
+  if(fx>0){var cx=EVX+150,cy=EVY-40;
+    trazo([[cx-22,cy-22],[cx+22,cy+22]],{color:P.oxido,w:3.2,seed:291,frac:clamp(fx*2,0,1)});
+    trazo([[cx+22,cy-22],[cx-22,cy+22]],{color:P.oxido,w:3.2,seed:292,frac:clamp(fx*2-1,0,1)});}
+}
+function bamboleo(t,t0){var u=clamp((t-t0)/0.7,0,1);return 0.07*Math.sin(Math.PI*u);}   // el tambor se mueve 4° y vuelve
+
+/* ---------- el pasillo (mundo A) ---------- */
+var DX0=560,DX1=1040,DY0=56,DY1=900,DW=DX1-DX0,DH=DY1-DY0;
+var KNOB={u:430,v:414,r:26},CIL={u:430,v:484,r:22};
+/* th = apertura (hacia adentro, bisagra a la izquierda); tk = giro de la llave puesta (null: sin llave); g = fracción de dibujo */
+function pasillo(th,tk,g){
+  var P=PASILLO,c=Math.cos(th),sn=Math.sin(th),D=1400,i,j;
+  function dp(u,v){var s=1/(1+u*sn/D);return [DX0+u*c,470+(v+DY0-470)*s];}
+  function ds(u){return 1/(1+u*sn/D);}
+  paper(P);
+  var gr=ctx.createRadialGradient(300,126,10,300,126,760);gr.addColorStop(0,al(P.ambar,0.16));gr.addColorStop(0.45,al(P.ambar,0.05));gr.addColorStop(1,al(P.ambar,0));
+  ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+  trazo([[300,0],[300,88]],{color:P.dim,w:1.6,seed:201,frac:g});
+  relleno([[268,88],[332,88],[320,116],[280,116]],{color:P.bg3,alpha:0.9,seed:202,amp:0.8});
+  trazo([[268,88],[332,88],[320,116],[280,116]],{color:P.dim,w:1.6,close:true,seed:203,frac:g});
+  if(g>0.5)luz(300,126,9,P.ambar,204,1);
+  trazo([[0,870],[516,870]],{color:P.dim,w:1.4,seed:205,alpha:0.6,frac:g});
+  trazo([[1084,870],[W,870]],{color:P.dim,w:1.4,seed:206,alpha:0.6,frac:g});
+  trazo([[520,900],[520,24],[1080,24],[1080,900]],{color:P.tinta,w:2.4,seed:207,frac:g,pasadas:2});
+  trazo([[548,900],[548,52],[1052,52],[1052,900]],{color:P.dim,w:1.5,seed:208,frac:g});
+  if(th>0.002){   // la luz de adentro, entre el canto de la hoja y la jamba
+    var tr=dp(DW,0),br=dp(DW,DH);
+    relleno([[tr[0],tr[1]],[1052,52],[1052,900],[br[0],br[1]]],{color:P.ambar,alpha:0.32,seed:209,amp:0.4,step:30});
+    relleno([[tr[0],tr[1]],[1052,52],[1052,900],[br[0],br[1]]],{color:P.tinta,alpha:0.14,seed:210,amp:0.4,step:30});
+    trazo([[tr[0]+3,tr[1]],[br[0]+3,br[1]]],{color:P.ambar,w:3,seed:211,alpha:0.6});
+  }
+  var q=[dp(0,0),dp(DW,0),dp(DW,DH),dp(0,DH)];
+  relleno(q,{color:P.bg2,alpha:clamp(g*1.5,0,1),seed:212,amp:0.5,step:40});
+  trazo(q,{color:P.tinta,w:2.2,close:true,seed:213,frac:g,pasadas:2});
+  var pan=[[40,54,350,334],[40,414,350,784]];
+  for(i=0;i<2;i++){var a=pan[i],pp=[dp(a[0],a[1]),dp(a[2],a[1]),dp(a[2],a[3]),dp(a[0],a[3])];
+    trazo(pp,{color:P.dim,w:1.5,close:true,seed:214+i,frac:clamp(g*1.4-0.2,0,1)});
+    var b=[a[0]+16,a[1]+16,a[2]-16,a[3]-16],pq=[dp(b[0],b[1]),dp(b[2],b[1]),dp(b[2],b[3]),dp(b[0],b[3])];
+    trazo(pq,{color:P.dim,w:1.1,close:true,seed:216+i,alpha:0.7,frac:clamp(g*1.4-0.4,0,1)});
+    for(j=0;j<4;j++)trazo([pp[j],pq[j]],{color:P.dim,w:1,seed:218+i*4+j,alpha:0.6,frac:clamp(g*1.4-0.4,0,1)});
+  }
+  var kp=dp(KNOB.u,KNOB.v),ks=ds(KNOB.u),cp=dp(CIL.u,CIL.v),cs=ds(CIL.u),ros=[],kn=[],ci=[];
+  for(i=0;i<=20;i++){var a1=i/20*6.2832;
+    ros.push([kp[0]+Math.cos(a1)*KNOB.r*1.35*ks,kp[1]+Math.sin(a1)*KNOB.r*1.35*ks]);
+    kn.push([kp[0]+Math.cos(a1)*KNOB.r*ks,kp[1]+Math.sin(a1)*KNOB.r*ks]);
+    ci.push([cp[0]+Math.cos(a1)*CIL.r*cs,cp[1]+Math.sin(a1)*CIL.r*cs]);}
+  trazo(ros,{color:P.dim,w:1.2,seed:230,alpha:0.7,frac:clamp(g*1.6-0.6,0,1)});
+  relleno(kn,{color:P.ambar,alpha:0.85,seed:231,amp:0.6,step:8});
+  trazo(kn,{color:P.tinta,w:1.6,seed:232,frac:clamp(g*1.6-0.6,0,1),amp:0.8,step:8});
+  if(g>0.7)luz(kp[0]-KNOB.r*0.35*ks,kp[1]-KNOB.r*0.4*ks,3,P.tinta,233,0);
+  relleno(ci,{color:P.ambar,alpha:0.75,seed:234,amp:0.6,step:8});
+  trazo(ci,{color:P.tinta,w:1.6,seed:235,frac:clamp(g*1.6-0.6,0,1),amp:0.8,step:8});
+  if(tk===null)trazo([[cp[0],cp[1]-13*cs],[cp[0],cp[1]+13*cs]],{color:P.bg3,w:5,seed:236,frac:clamp(g*1.6-0.7,0,1)});
+  else cabezaFrontal(cp[0],cp[1]+2*cs,tk,cs,{p:P});
+  return {cp:cp,cs:cs,kp:kp};
+}
+function firma(t0,t){
+  var f=clamp((t-t0)/1.1,0,1),P=PASILLO;
+  if(f<=0)return;
+  llave(1332,842,-0.18,0.34,{p:P,frac:f,seed:300,w:1.4});
+  texto('CLAUDE · 2026',1372,852,22,{color:P.dim,seed:301,frac:clamp((f-0.35)/0.65,0,1)});
+}
+/* los rótulos de la primera hoja (II), que después quedan apagados al 40 % */
+function rotulosII(t,alpha){
+  var P=PLANO,A=alpha;function fe(a){return t===null?1:clamp((t-a)/0.95,0,1);}
+  rotulo(240,320,30,-200,'CARCASA: FIJA',28,{color:P.tinta,seed:270,frac:fe(2.3),alpha:A});
+  rotulo(660,395,-30,-215,'CONTRAPINES',28,{color:P.tinta,seed:271,frac:fe(2.55),alpha:A});
+  rotulo(770,310,40,-190,'RESORTES',28,{color:P.tinta,seed:272,frac:fe(2.8),alpha:A});
+  rotulo(931,400,40,-200,'LÍNEA DE CORTE',28,{color:P.ambar,seed:273,frac:fe(3.05),alpha:A});
+  rotulo(240,548,0,100,'TAMBOR: GIRA',28,{color:P.tinta,seed:274,frac:fe(3.3),alpha:A});
+  rotulo(550,520,20,140,'PINES',28,{color:P.tinta,seed:275,frac:fe(3.55),alpha:A});
+  texto('A-A · DE FRENTE',EVX,612,24,{color:P.tinta,align:'c',seed:260,frac:t===null?1:clamp((t-2.9)/0.8,0,1),alpha:A});
+  texto('CILINDRO YALE · PAT. 1865',1570,110,20,{color:P.dim,align:'r',seed:280,frac:t===null?1:clamp((t-3.9)/0.9,0,1),alpha:A});
+  texto('CORTADO AL MEDIO, DE COSTADO',1570,140,20,{color:P.dim,align:'r',seed:281,frac:t===null?1:clamp((t-4.2)/1.2,0,1),alpha:A});
+}
+function textosIII(t,alpha){
+  var P=PLANO;function fe(a,n){return t===null?1:clamp((t-a)/ESCR(n),0,1);}
+  texto('SIN LLAVE, LOS CONTRAPINES',1010,760,26,{color:P.tinta,seed:293,frac:fe(0.5,26),alpha:alpha});
+  texto('CRUZAN LA LÍNEA.',1010,805,26,{color:P.oxido,seed:294,frac:fe(1.8,16),alpha:alpha});
+  texto('EL TAMBOR NO GIRA.',1010,850,26,{color:P.tinta,seed:295,frac:fe(2.6,18),alpha:alpha});
+}
+function textosIV(t,alpha){
+  var P=PLANO;function fe(a,n){return t===null?1:clamp((t-a)/ESCR(n),0,1);}
+  texto('CADA DIENTE DEJA SU PIN',170,790,36,{color:P.tinta,seed:320,frac:fe(2.6,23),alpha:alpha});
+  texto('JUSTO EN LA LÍNEA. NADA LA CRUZA.',170,846,36,{color:P.ambar,seed:321,frac:fe(3.7,33),alpha:alpha});
+}
+var G1={cuerpo:1,camaras:1,pines:1,linea:1},GF1={anillo:1,tambor:1,piezas:1};
+function entra(t,t0,dur){return S0*(1-ease((t-t0)/dur));}
+
+/* ===================== ESCENAS ===================== */
+/* I — La puerta */
+function escPuerta(t){
+  var P=PASILLO,g=clamp(t/0.9,0,1),fin=clamp((t-2.9)/0.8,0,1);
+  var r=pasillo(0,fin>=0.85?0:null,g);
+  if(t>=0.5&&fin<0.85){
+    var m=easeOut(clamp((t-0.5)/2.4,0,1)),x=lerp(1540,r.cp[0]+96,m),y=lerp(860,r.cp[1],m),ang=lerp(-0.55,0,m);
+    ctx.save();ctx.beginPath();ctx.rect(r.cp[0],0,W,H);ctx.clip();   // lo que entra en el cilindro se recorta
+    llave(x-fin*100,y,Math.PI+ang,0.72,{p:P,seed:240,w:1.6});
+    ctx.restore();
+  }
+  texto('CÓMO ABRE',70,330,64,{color:P.tinta,seed:250,frac:clamp((t-0.9)/ESCR(9),0,1),pasadas:2});
+  texto('UNA LLAVE',70,414,64,{color:P.ambar,seed:251,frac:clamp((t-1.5)/ESCR(9),0,1),pasadas:2});
+}
+/* II — Por dentro */
+function escDentro(t){
+  var P=PLANO;paper(P);
+  corte(null,{cuerpo:clamp(t/1.0,0,1),camaras:clamp((t-0.6)/0.9,0,1),pines:clamp((t-1.2)/1.0,0,1),linea:clamp((t-1.8)/0.6,0,1)},{});
+  marcaAA(clamp((t-2.2)/0.6,0,1),1);
+  vistaFrontal(0,null,{anillo:clamp((t-1.6)/0.8,0,1),tambor:clamp((t-2.0)/0.8,0,1),piezas:clamp((t-2.4)/0.8,0,1)},{});
+  rotulosII(t,1);
+}
+/* III — Trabado */
+function escTrabado(t){
+  var P=PLANO;paper(P);
+  corte(null,G1,{cruz:clamp((t-0.3)/1.0,0,1)});
+  marcaAA(1,0.4);
+  var th=bamboleo(t,1.6);
+  vistaFrontal(th,null,GF1,{cruz:clamp((t-0.3)/1.0,0,1),choque:th/0.07});
+  rotulosII(null,0.4);
+  intentoGiro(t,1.2);
+  textosIII(t,1);
+}
+/* IV — La llave justa */
+function escJusta(t){
+  var P=PLANO;paper(P);
+  var s=entra(t,0.3,1.8),la=clamp((t-2.3)/0.5,0,1),i;
+  corte(s,G1,{lineaAmbar:la});
+  marcaAA(1,0.4);
+  vistaFrontal(0,s,GF1,{lineaAmbar:la});
+  rotulosII(null,0.4);
+  textosIII(null,0.3);
+  for(i=0;i<5;i++)marca([CHX[i],YSH],15,P.ambar,310+i,clamp((t-2.4-i*0.12)/0.6,0,1));
+  textosIV(t,1);
+}
+/* V — Gira (zoom a la vista A-A) */
+function escGira(t){
+  var P=PLANO,u=ease(t/0.9),k=lerp(1,1.95,u),cx=lerp(800,EVX,u),cy=lerp(450,EVY-10,u);
+  var th=1.5708*ease((t-1.1)/1.3);
+  hojaCam(P,k,cx,cy);
+  ctx.save();ctx.translate(W/2,H/2);ctx.scale(k,k);ctx.translate(-cx,-cy);
+  corte(0,G1,{lineaAmbar:1});
+  marcaAA(1,0.4);
+  rotulosII(null,0.4);
+  textosIII(null,0.3);
+  textosIV(null,0.4);
+  vistaFrontal(th,0,GF1,{lineaAmbar:1});
+  var fa=clamp((t-1.0)/0.8,0,1);
+  flechaArco(EVX,EVY,EVRP+40,-1.0,-1.0+1.5*fa,{color:P.ambar,w:2.2,seed:330,frac:fa>0?1:0,alpha:fa});
+  texto('90°',EVX+128,EVY-62,18,{color:P.ambar,seed:331,frac:clamp((t-2.3)/0.6,0,1)});
+  ctx.restore();
+  texto('EL TAMBOR GIRA.',800,800,36,{color:P.tinta,align:'c',seed:340,frac:clamp((t-1.3)/ESCR(15),0,1)});
+  texto('LOS CONTRAPINES QUEDAN ARRIBA.',800,854,32,{color:P.ambar,align:'c',seed:341,frac:clamp((t-2.3)/ESCR(30),0,1)});
+}
+/* VI — Se abre */
+function escAbre(t){
+  var P=PASILLO,tk=1.5708*ease((t-0.3)/0.8),th=0.49*ease((t-1.3)/1.9);
+  pasillo(th,tk,1);
+  texto('GIRA.',1120,330,44,{color:P.ambar,seed:350,frac:clamp((t-0.4)/ESCR(5),0,1),pasadas:2});
+  texto('EL PESTILLO ENTRA.',1120,392,30,{color:P.tinta,seed:351,frac:clamp((t-1.0)/ESCR(18),0,1)});
+}
+/* VII — La otra llave (hoja nueva, la alta) */
+function dibujoVII(t,A){   // t: tiempo local de VII (null = estado final); A: alpha
+  var P=PLANO,tt=t===null?99:t;
+  function c(a,d){return clamp((tt-a)/d,0,1);}
+  var s=t===null?0:(tt<1.2?S0:entra(tt,1.2,1.6)),cz=c(2.9,0.6),th=t===null?0:bamboleo(tt,3.4);
+  corte(s,{cuerpo:c(0.2,0.7),camaras:c(0.5,0.6),pines:c(0.8,0.6),linea:c(1.0,0.4)},{alpha:A,bit:BIT2,pol:LLAVE2,cruz:cz});
+  vistaFrontal(th,s,{anillo:c(0.9,0.5),tambor:c(1.1,0.5),piezas:c(1.3,0.5)},{alpha:A,bit:BIT2,cruz:cz,choque:th/0.07});
+  if(t!==null)intentoGiro(tt,3.0);else{
+    flechaArco(EVX,EVY,EVR+16,-0.95,-0.15,{color:P.oxido,w:2.4,seed:290,alpha:A});
+    var cx=EVX+150,cy=EVY-40;
+    trazo([[cx-22,cy-22],[cx+22,cy+22]],{color:P.oxido,w:3.2,seed:291,alpha:A});
+    trazo([[cx+22,cy-22],[cx-22,cy+22]],{color:P.oxido,w:3.2,seed:292,alpha:A});}
+  texto('OTRA LLAVE: 1·5·1·6·2',170,790,36,{color:P.tinta,seed:360,frac:c(0.5,ESCR(21)),alpha:A,pasadas:2});
+  texto('UNO ARRIBA, OTRO ABAJO. NO GIRA.',170,846,36,{color:P.oxido,seed:361,frac:c(3.0,ESCR(32)),alpha:A});
+}
+function escOtra(t){
+  ctx.drawImage(laminaAlta(PLANO),0,0);
+  dibujoVII(t,1);
+}
+/* VIII — Las cuentas (la misma hoja, 900 px más abajo) */
+function escCuentas(t){
+  var P=PLANO,dy=900*ease(t/0.9),OY=900,i,j;
+  ctx.drawImage(laminaAlta(P),0,-dy);
+  ctx.save();ctx.translate(0,-dy);
+  if(dy<900)dibujoVII(null,0.4);
+  var X0=330,X1=1270,Y0=150+OY,ST=14,CX=[450,630,810,990,1170];
+  var fl=clamp((t-0.8)/1.0,0,1),pts=[],x;
+  function top(xx){var y=0;for(var k=0;k<5;k++){var dx=Math.abs(xx-CX[k]),yc=ST*BIT[k],yy=dx<=28?yc:yc-(dx-28);if(yy>y)y=yy;}
+    if(xx>X1-30){var yt=(xx-(X1-30))*1.1;if(yt>y)y=yt;}return y;}
+  for(x=X0;x<=X1;x+=8)pts.push([x,Y0+top(x)]);
+  pts.push([X1,Y0+top(X1)]);pts.push([X1,Y0+82]);pts.push([X1-16,Y0+100]);pts.push([X0,Y0+100]);
+  pts.push([X0-6,Y0+118]);pts.push([X0-40,Y0+148]);pts.push([X0-104,Y0+150]);pts.push([X0-146,Y0+112]);pts.push([X0-148,Y0-12]);
+  pts.push([X0-112,Y0-50]);pts.push([X0-44,Y0-52]);pts.push([X0-8,Y0-22]);pts.push([X0,Y0]);
+  relleno(pts,{color:P.ambar,alpha:0.9*clamp(fl*1.3-0.3,0,1),seed:360,amp:0.9,step:12});
+  trazo(pts,{color:P.tinta,w:2,close:true,seed:361,frac:fl,step:12});
+  circulo(X0-84,Y0+50,18,{color:P.tinta,w:1.6,seed:362,frac:clamp(fl*1.5-0.5,0,1)});
+  for(i=0;i<5;i++)texto(String(BIT[i]),CX[i],Y0+172,44,{color:P.ambar,align:'c',seed:370+i,frac:clamp((t-1.2-i*0.25)/0.5,0,1)});
+  texto('CÓDIGO',CX[0]-80,Y0+174,22,{color:P.dim,align:'r',seed:369,frac:clamp((t-1.1)/0.6,0,1)});
+  var GY=360+OY,GS=46,fg=clamp((t-1.4)/1.0,0,1);
+  for(j=0;j<6;j++){var y=GY+j*GS;
+    trazo([[CX[0]-60,y],[CX[4]+60,y]],{color:P.dim,w:1.1,seed:380+j,alpha:0.7,frac:clamp(fg*1.5-j*0.1,0,1),step:30});
+    texto(String(j+1),CX[0]-80,y+8,22,{color:P.dim,align:'r',seed:390+j,frac:clamp(fg*1.5-j*0.1,0,1)});}
+  texto('ALTURA',CX[0]-150,GY+2.5*GS,20,{color:P.dim,align:'c',rot:-1.5708,seed:399,frac:clamp((t-1.3)/0.6,0,1)});
+  for(i=0;i<5;i++)trazo([[CX[i],GY-10],[CX[i],GY+5*GS+10]],{color:P.dim,w:1.1,seed:400+i,alpha:0.5,frac:clamp(fg*1.5-i*0.1,0,1),step:30});
+  for(i=0;i<5;i++){var fm=clamp((t-2.3-i*0.15)/0.4,0,1);if(fm>0){var y2=GY+(BIT[i]-1)*GS;
+    ctx.save();ctx.globalAlpha=fm;ctx.fillStyle=P.ambar;ctx.beginPath();ctx.arc(CX[i],y2,9,0,6.2832);ctx.fill();ctx.restore();
+    circulo(CX[i],y2,14,{color:P.tinta,w:1.4,seed:410+i,frac:fm});}}
+  texto('ESTA LLAVE: 6 ALTURAS POR PIN',800,660+OY,36,{color:P.tinta,align:'c',seed:420,frac:clamp((t-2.4)/ESCR(29),0,1)});
+  texto('6×6×6×6×6 = 7776 LLAVES',800,722+OY,40,{color:P.tinta,align:'c',seed:421,frac:clamp((t-3.6)/ESCR(23),0,1),pasadas:2});
+  texto('UNA SOLA ALINEA LOS CINCO',800,786+OY,36,{color:P.ambar,align:'c',seed:422,frac:clamp((t-4.6)/ESCR(25),0,1),pasadas:2});
+  texto('(EN TEORÍA)',800,844+OY,22,{color:P.dim,align:'c',seed:423,frac:clamp((t-5.2)/ESCR(11),0,1)});
+  ctx.restore();
+}
+/* IX — Cierre */
+function escCierre(t){
+  var P=PASILLO;
+  pasillo(0.49,1.5708,1);
+  texto('LA LLAVE',60,330,46,{color:P.tinta,seed:430,frac:clamp((t-0.4)/ESCR(8),0,1),pasadas:2});
+  texto('NO FUERZA NADA.',60,400,44,{color:P.tinta,seed:431,frac:clamp((t-1.0)/ESCR(15),0,1),pasadas:2});
+  texto('ALINEA,',60,470,46,{color:P.ambar,seed:432,frac:clamp((t-1.8)/ESCR(7),0,1),pasadas:2});
+  texto('Y GIRA.',1120,440,64,{color:P.ambar,seed:433,frac:clamp((t-2.5)/ESCR(7),0,1),pasadas:2});
+  firma(3.4,t);
+}
+
+/* ===================== LÍNEA DE TIEMPO ===================== */
+var TL=[
+ {n:'I',   nom:'La puerta',      txt:'Una puerta de noche. Entra la llave.',                         d:4.2, f:escPuerta,  p:PASILLO},
+ {n:'II',  nom:'Por dentro',     txt:'El cilindro cortado al medio: cinco pines partidos en dos.',    d:5.6, f:escDentro,  p:PLANO, tr:'sube'},
+ {n:'III', nom:'Trabado',        txt:'Sin llave, los contrapines cruzan la línea de corte.',          d:4.4, f:escTrabado, p:PLANO},
+ {n:'IV',  nom:'La llave justa', txt:'Cada diente deja su pin justo en la línea. Nada la cruza.',    d:5.8, f:escJusta,   p:PLANO},
+ {n:'V',   nom:'Gira',           txt:'El tambor gira; los contrapines quedan arriba.',                d:4.6, f:escGira,    p:PLANO},
+ {n:'VI',  nom:'Se abre',        txt:'La llave gira, el pestillo entra, la puerta cede.',             d:4.0, f:escAbre,    p:PASILLO, tr:'saca'},
+ {n:'VII', nom:'La otra llave',  txt:'Otra llave entra, pero un pin cruza arriba y otro abajo.',      d:5.2, f:escOtra,    p:PLANO, tr:'sube'},
+ {n:'VIII',nom:'Las cuentas',    txt:'Seis alturas, cinco pines: 7776 llaves. Una sola alinea.',     d:6.4, f:escCuentas, p:PLANO},
+ {n:'IX',  nom:'Cierre',         txt:'La llave no fuerza nada: alinea, y gira.',                     d:5.6, f:escCierre,  p:PASILLO, tr:'saca'}
+];
+
+/* ===================== PARTITURA =====================
+   Un sonido por idea: golpe sordo = trabado; clic brillante = gira; campana larga = alineado;
+   las notas cortas son las alturas (las seis) y el código de cada llave. */
+(function(){
+  var T=[0],i;for(i=0;i<TL.length;i++)T.push(T[i]+TL[i].d);
+  var A=function(k,t){return T[k]+t;};
+  function golpe(t){ev(t,'tic',120,0.12,0.6);ev(t,'bajo',50,0.35,0.16);}
+  function clic(t){ev(t,'tic',2000,0.03,0.55);ev(t+0.01,'tic',900,0.05,0.3);}
+  function nota(t,n,v){ev(t,'campana',NOTAS[n-1],0.7,v||0.2);}
+  function tiempoPin(i,t0,dur){   // cuándo la punta de la llave llega a la cámara i (fracción del gesto, por bisección)
+    var si=TIP+22-CHX[i],lo=0,hi=1,m,f=0;for(m=0;m<40;m++){f=(lo+hi)/2;if(S0*(1-ease(f))<si)hi=f;else lo=f;}
+    return t0+dur*f;
+  }
+  // I — la puerta
+  ev(A(0,0.0),'aire',0,1.6,0.10);ev(A(0,0.0),'bajo',55,4.2,0.10);
+  ev(A(0,0.25),'tic',110,0.14,0.35);ev(A(0,0.85),'tic',110,0.14,0.32);ev(A(0,1.45),'tic',110,0.14,0.28);
+  ev(A(0,0.9),'lapiz',0,0.8,0.35);ev(A(0,1.5),'lapiz',0,0.8,0.35);
+  ev(A(0,2.0),'tic',3200,0.04,0.22);ev(A(0,2.15),'tic',2700,0.04,0.2);ev(A(0,2.6),'tic',3400,0.04,0.18);
+  ev(A(0,3.5),'tic',1400,0.08,0.4);
+  // II — por dentro
+  ev(A(1,0.0),'hoja',0,0.5,1);ev(A(1,0.1),'swell',1,5.4,0.5);
+  ev(A(1,0.0),'lapiz',0,1.0,0.35);ev(A(1,1.2),'lapiz',0,1.0,0.3);
+  var R=[2.3,2.55,2.8,3.05,3.3,3.55];for(i=0;i<6;i++)ev(A(1,R[i]),'lapiz',0,0.7,0.32);
+  ev(A(1,1.8),'tic',2000,0.05,0.3);ev(A(1,3.9),'lapiz',0,0.8,0.25);
+  // III — trabado
+  for(i=0;i<5;i++)ev(A(2,0.3+i*0.12),'tic',500,0.06,0.3);
+  ev(A(2,0.5),'lapiz',0,1.2,0.3);ev(A(2,1.2),'lapiz',0,0.5,0.3);
+  golpe(A(2,1.95));ev(A(2,2.3),'lapiz',0,0.3,0.35);ev(A(2,2.5),'lapiz',0,0.3,0.35);
+  ev(A(2,1.8),'lapiz',0,0.9,0.3);ev(A(2,2.6),'lapiz',0,1.0,0.3);
+  // IV — la llave justa: el roce, y cada pin que la punta levanta toca su nota
+  ev(A(3,0.3),'aire',0,1.8,0.14);
+  for(i=0;i<5;i++){var ti=tiempoPin(i,0.3,1.8);ev(A(3,ti),'tic',2400,0.05,0.3);nota(A(3,ti),BIT[i],0.2);}
+  ev(A(3,2.1),'tic',1800,0.07,0.4);
+  ev(A(3,2.35),'campana',440,2.0,0.16);ev(A(3,2.35),'campana',660,2.0,0.1);ev(A(3,2.35),'campana',880,1.6,0.06);
+  for(i=0;i<5;i++)ev(A(3,2.4+i*0.12),'tic',2600,0.04,0.2);
+  ev(A(3,2.6),'lapiz',0,1.3,0.3);ev(A(3,3.7),'lapiz',0,1.6,0.3);
+  // V — gira
+  ev(A(4,0.0),'aire',0,0.9,0.08);ev(A(4,1.1),'aire',0,1.3,0.12);clic(A(4,2.4));
+  nota(A(4,2.45),6,0.18);ev(A(4,1.3),'lapiz',0,0.9,0.3);ev(A(4,2.3),'lapiz',0,1.4,0.3);
+  // VI — se abre
+  ev(A(5,0.0),'hoja',0,0.5,1);ev(A(5,0.0),'bajo',55,4.0,0.10);
+  ev(A(5,0.3),'aire',0,0.8,0.08);clic(A(5,1.1));ev(A(5,1.3),'tic',380,0.12,0.45);
+  ev(A(5,1.5),'aire',0,1.8,0.16);ev(A(5,0.4),'lapiz',0,0.6,0.3);ev(A(5,1.0),'lapiz',0,1.0,0.3);
+  // VII — la otra llave: su melodía empieza distinto, y el golpe sordo de III
+  ev(A(6,0.0),'hoja',0,0.5,1);ev(A(6,0.1),'swell',1,5.0,0.45);ev(A(6,0.2),'lapiz',0,1.2,0.35);
+  ev(A(6,1.2),'aire',0,1.6,0.14);
+  for(i=0;i<5;i++){var tj=tiempoPin(i,1.2,1.6);ev(A(6,tj),'tic',2400,0.05,0.3);nota(A(6,tj),BIT2[i],0.2);}
+  for(i=0;i<5;i++)ev(A(6,2.9+i*0.1),'tic',500,0.06,0.25);
+  golpe(A(6,3.75));ev(A(6,4.1),'lapiz',0,0.3,0.35);ev(A(6,4.3),'lapiz',0,0.3,0.35);
+  ev(A(6,0.5),'lapiz',0,1.3,0.3);ev(A(6,3.0),'lapiz',0,1.8,0.3);
+  // VIII — las cuentas: la cámara baja, la escala de las seis alturas, el código, 7776
+  ev(A(7,0.0),'hoja',0,0.9,0.7);ev(A(7,0.8),'lapiz',0,1.0,0.35);
+  for(i=0;i<5;i++){nota(A(7,1.2+i*0.25),BIT[i],0.16);ev(A(7,1.2+i*0.25),'tic',2400,0.04,0.2);}
+  for(i=0;i<6;i++)nota(A(7,1.5+i*0.15),i+1,0.1);
+  for(i=0;i<5;i++)ev(A(7,2.3+i*0.15),'tic',2200,0.04,0.25);
+  ev(A(7,2.4),'lapiz',0,1.6,0.3);ev(A(7,3.6),'lapiz',0,1.4,0.3);ev(A(7,4.9),'campana',880,1.6,0.14);
+  ev(A(7,4.6),'lapiz',0,1.5,0.3);ev(A(7,5.2),'lapiz',0,0.9,0.25);
+  // IX — cierre: la melodía de la llave y el acorde
+  ev(A(8,0.0),'hoja',0,0.5,1);ev(A(8,0.0),'bajo',55,5.6,0.10);
+  for(i=0;i<5;i++)nota(A(8,0.4+i*0.32),BIT[i],0.2);
+  ev(A(8,2.5),'campana',220,2.8,0.14);ev(A(8,2.5),'campana',330,2.8,0.09);ev(A(8,2.5),'campana',440,2.8,0.07);
+  ev(A(8,2.3),'swell',1,3.0,0.35);clic(A(8,2.5));
+  ev(A(8,0.4),'lapiz',0,0.8,0.3);ev(A(8,1.0),'lapiz',0,1.0,0.3);ev(A(8,1.8),'lapiz',0,0.7,0.3);ev(A(8,2.5),'lapiz',0,0.7,0.3);
+  ev(A(8,3.4),'lapiz',0,1.0,0.25);
+})();
+
+arrancar(3.9);   // portada: el título escrito y la llave tocando la cerradura
+
+</script>
