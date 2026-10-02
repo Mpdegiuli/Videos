@@ -28,6 +28,8 @@ var PLANO={id:'z',bg:'#1d4a7a',bg2:'#245a91',bg3:'#153a61',grano:'#7fa3c8',
   tinta:'#eef3f8',dim:'#a9c1da',ambar:'#f2d27a',oxido:'#f09a7a',cons:'#cfe0f0',
   sombra:'#0d2742',canto:'#5f86b0',rejilla:'#9dbbd8',seed:31,grid:1};
 GL['=']=[46,[[6,40,40,40],[6,64,40,64]]];   // el alfabeto del núcleo no trae el igual
+/* un trazo cerrado que todavía se está dibujando no se cierra (si no, el núcleo tira una cuerda del último punto al primero) */
+trazo=(function(orig){return function(pts,o){if(o&&o.close&&o.frac!==undefined&&o.frac<1){o=Object.assign({},o);o.close=false;}return orig(pts,o);};})(trazo);
 
 /* ---------- geometría del cilindro (hoja 1600×900) ---------- */
 var YSH=400;                       // línea de corte
@@ -46,7 +48,7 @@ var EVX=1180,EVY=470,EVR=102,EVRP=(PY1-YSH)/2,EVTW=52;   // vista A-A, misma esc
 var LEVA={x0:HX1,x1:HX1+32,y0:PC-34,y1:PC+34};
 var NOTAS=[220,261.63,293.66,329.63,392,440];   // las seis alturas, en pentatónica
 var ESCR=function(n){return 0.4+0.045*n;};      // cuánto tarda en escribirse un rótulo de n letras
-var S0=720;                                     // corrida de la llave cuando está afuera del todo
+var S0=920;                                     // corrida de la llave cuando está afuera del todo (la punta queda fuera de cuadro)
 
 /* ---------- la llave ---------- */
 function topLocal(x,bit){           // superficie superior de la hoja (0 = sin cortar), x desde el hombro
@@ -170,10 +172,11 @@ function corte(s,g,o){
   trazo([[xs,KW0],[KWEND,KW0]],{color:P.tinta,w:1.5,seed:63,frac:g.camaras,alpha:A});
   for(i=0;i<5;i++)trazo([[CHX[i]-CHW/2,KW0],[CHX[i]-CHW/2,CHT],[CHX[i]+CHW/2,CHT],[CHX[i]+CHW/2,KW0]],
     {color:P.tinta,w:1.5,seed:70+i,frac:clamp(g.camaras*1.4-i*0.08,0,1),alpha:A});
-  if(s!==null)llave(SHO-s,KW0,0,1,{frac:1,alpha:A,seed:120,pol:o.pol||LLAVE1});
+  var gi=o.girado||0,Ag=A*(1-gi);   // girado: lo que viaja con el tambor sale del plano de corte
+  if(s!==null&&gi<1)llave(SHO-s,KW0,0,1,{frac:1,alpha:Ag,seed:120,pol:o.pol||LLAVE1});
   for(i=0;i<5;i++){
     var fb=fondoPin(i,s,bit),ft=fb-LK[i],fp=clamp(g.pines*1.5-i*0.1,0,1);
-    pin(CHX[i],ft,fb,CHW-8,'llave',80+i*3,fp,P.ambar,A);
+    if(gi<1)pin(CHX[i],ft,fb,CHW-8,'llave',80+i*3,fp,P.ambar,Ag);
     pin(CHX[i],ft-LD,ft,CHW-8,'contra',81+i*3,fp,P.cons,A);
     resorte(CHX[i],CHT,ft-LD,82+i*3,fp,A);
     if(o.cruz){var cf=clamp(o.cruz*1.6-i*0.15,0,1);
@@ -189,13 +192,13 @@ function corte(s,g,o){
 }
 /* marca del plano de corte A-A: sólo los extremos, como en los planos */
 function marcaAA(f,alpha){
-  if(f<=0)return;var x=CHX[0],P=PLANO;
-  trazo([[x,HY0-34],[x,HY0-6]],{color:P.tinta,w:2.2,seed:110,frac:f,alpha:alpha});
-  trazo([[x,PY1+6],[x,PY1+34]],{color:P.tinta,w:2.2,seed:111,frac:f,alpha:alpha});
-  trazo([[x-14,HY0-20],[x,HY0-34],[x+14,HY0-20]],{color:P.tinta,w:1.6,seed:112,frac:f,alpha:alpha});
-  trazo([[x-14,PY1+20],[x,PY1+34],[x+14,PY1+20]],{color:P.tinta,w:1.6,seed:113,frac:f,alpha:alpha});
-  texto('A',x+22,HY0-18,22,{color:P.tinta,seed:114,frac:clamp(f*2-1,0,1),alpha:alpha});
-  texto('A',x+22,PY1+36,22,{color:P.tinta,seed:115,frac:clamp(f*2-1,0,1),alpha:alpha});
+  if(f<=0)return;var x=CHX[0],P=PLANO,k;
+  var ys=[HY0-22,PY1+22];
+  for(k=0;k<2;k++){var y=ys[k];
+    trazo([[x,y-14],[x,y+14]],{color:P.tinta,w:2.2,seed:110+k,frac:f,alpha:alpha});
+    trazo([[x,y],[x+34,y]],{color:P.tinta,w:1.8,seed:112+k,frac:f,alpha:alpha});
+    trazo([[x+24,y-8],[x+34,y],[x+24,y+8]],{color:P.tinta,w:1.6,seed:116+k,frac:clamp(f*2-1,0,1),alpha:alpha});
+    texto('A',x+44,y-11,22,{color:P.tinta,seed:114+k,frac:clamp(f*2-1,0,1),alpha:alpha});}
 }
 /* vista A-A (de frente, cortada por la primera cámara), misma escala que el corte: la carcasa es un círculo con una torre.
    th = giro del tambor; s = llave; g = {anillo,tambor,piezas}; o = {alpha, bit, lineaAmbar, choque} */
@@ -313,16 +316,16 @@ function pasillo(th,tk,g){
 function firma(t0,t){
   var f=clamp((t-t0)/1.1,0,1),P=PASILLO;
   if(f<=0)return;
-  llave(1332,842,-0.18,0.34,{p:P,frac:f,seed:300,w:1.4});
-  texto('CLAUDE · 2026',1372,852,22,{color:P.dim,seed:301,frac:clamp((f-0.35)/0.65,0,1)});
+  llave(1332,822,-0.18,0.34,{p:P,frac:f,seed:300,w:1.4});
+  texto('CLAUDE · 2026',1340,866,22,{color:P.dim,seed:301,frac:clamp((f-0.35)/0.65,0,1)});
 }
 /* los rótulos de la primera hoja (II), que después quedan apagados al 40 % */
-function rotulosII(t,alpha){
-  var P=PLANO,A=alpha;function fe(a){return t===null?1:clamp((t-a)/0.95,0,1);}
+function rotulosII(t,alpha,lineaA){
+  var P=PLANO,A=alpha,LA=lineaA===undefined?alpha:lineaA;function fe(a){return t===null?1:clamp((t-a)/0.95,0,1);}
   rotulo(240,320,30,-200,'CARCASA: FIJA',28,{color:P.tinta,seed:270,frac:fe(2.3),alpha:A});
   rotulo(660,395,-30,-215,'CONTRAPINES',28,{color:P.tinta,seed:271,frac:fe(2.55),alpha:A});
   rotulo(770,310,40,-190,'RESORTES',28,{color:P.tinta,seed:272,frac:fe(2.8),alpha:A});
-  rotulo(931,400,40,-200,'LÍNEA DE CORTE',28,{color:P.ambar,seed:273,frac:fe(3.05),alpha:A});
+  rotulo(931,400,40,-200,'LÍNEA DE CORTE',28,{color:LA>=0.99?P.ambar:P.tinta,seed:273,frac:fe(3.05),alpha:LA});
   rotulo(240,548,0,100,'TAMBOR: GIRA',28,{color:P.tinta,seed:274,frac:fe(3.3),alpha:A});
   rotulo(550,520,20,140,'PINES',28,{color:P.tinta,seed:275,frac:fe(3.55),alpha:A});
   texto('A-A · DE FRENTE',EVX,612,24,{color:P.tinta,align:'c',seed:260,frac:t===null?1:clamp((t-2.9)/0.8,0,1),alpha:A});
@@ -332,13 +335,13 @@ function rotulosII(t,alpha){
 function textosIII(t,alpha){
   var P=PLANO;function fe(a,n){return t===null?1:clamp((t-a)/ESCR(n),0,1);}
   texto('SIN LLAVE, LOS CONTRAPINES',1010,760,26,{color:P.tinta,seed:293,frac:fe(0.5,26),alpha:alpha});
-  texto('CRUZAN LA LÍNEA.',1010,805,26,{color:P.oxido,seed:294,frac:fe(1.8,16),alpha:alpha});
+  texto('CRUZAN LA LÍNEA.',1010,805,26,{color:alpha>=0.99?P.oxido:P.tinta,seed:294,frac:fe(1.8,16),alpha:alpha});
   texto('EL TAMBOR NO GIRA.',1010,850,26,{color:P.tinta,seed:295,frac:fe(2.6,18),alpha:alpha});
 }
 function textosIV(t,alpha){
   var P=PLANO;function fe(a,n){return t===null?1:clamp((t-a)/ESCR(n),0,1);}
   texto('CADA DIENTE DEJA SU PIN',170,790,36,{color:P.tinta,seed:320,frac:fe(2.6,23),alpha:alpha});
-  texto('JUSTO EN LA LÍNEA. NADA LA CRUZA.',170,846,36,{color:P.ambar,seed:321,frac:fe(3.7,33),alpha:alpha});
+  texto('JUSTO EN LA LÍNEA. NADA LA CRUZA.',170,846,36,{color:alpha>=0.99?P.ambar:P.tinta,seed:321,frac:fe(3.7,33),alpha:alpha});
 }
 var G1={cuerpo:1,camaras:1,pines:1,linea:1},GF1={anillo:1,tambor:1,piezas:1};
 function entra(t,t0,dur){return S0*(1-ease((t-t0)/dur));}
@@ -347,13 +350,14 @@ function entra(t,t0,dur){return S0*(1-ease((t-t0)/dur));}
 /* I — La puerta */
 function escPuerta(t){
   var P=PASILLO,g=clamp(t/0.9,0,1),fin=clamp((t-2.9)/0.8,0,1);
-  var r=pasillo(0,fin>=0.85?0:null,g);
-  if(t>=0.5&&fin<0.85){
+  var r=pasillo(0,null,g),q=clamp((fin-0.55)/0.35,0,1);   // q: la cabeza de frente aparece mientras el perfil termina de entrar
+  if(t>=0.5&&q<1){
     var m=easeOut(clamp((t-0.5)/2.4,0,1)),x=lerp(1540,r.cp[0]+96,m),y=lerp(860,r.cp[1],m),ang=lerp(-0.55,0,m);
     ctx.save();ctx.beginPath();ctx.rect(r.cp[0],0,W,H);ctx.clip();   // lo que entra en el cilindro se recorta
-    llave(x-fin*100,y,Math.PI+ang,0.72,{p:P,seed:240,w:1.6});
+    llave(x-fin*100,y,Math.PI+ang,0.72,{p:P,seed:240,w:1.6,alpha:1-q});
     ctx.restore();
   }
+  if(q>0)cabezaFrontal(r.cp[0],r.cp[1]+2*r.cs,0,r.cs,{p:P,alpha:q});
   texto('CÓMO ABRE',70,330,64,{color:P.tinta,seed:250,frac:clamp((t-0.9)/ESCR(9),0,1),pasadas:2});
   texto('UNA LLAVE',70,414,64,{color:P.ambar,seed:251,frac:clamp((t-1.5)/ESCR(9),0,1),pasadas:2});
 }
@@ -383,7 +387,7 @@ function escJusta(t){
   corte(s,G1,{lineaAmbar:la});
   marcaAA(1,0.4);
   vistaFrontal(0,s,GF1,{lineaAmbar:la});
-  rotulosII(null,0.4);
+  rotulosII(null,0.4,1);
   textosIII(null,0.3);
   for(i=0;i<5;i++)marca([CHX[i],YSH],15,P.ambar,310+i,clamp((t-2.4-i*0.12)/0.6,0,1));
   textosIV(t,1);
@@ -394,11 +398,10 @@ function escGira(t){
   var th=1.5708*ease((t-1.1)/1.3);
   hojaCam(P,k,cx,cy);
   ctx.save();ctx.translate(W/2,H/2);ctx.scale(k,k);ctx.translate(-cx,-cy);
-  corte(0,G1,{lineaAmbar:1});
-  marcaAA(1,0.4);
-  rotulosII(null,0.4);
-  textosIII(null,0.3);
-  textosIV(null,0.4);
+  var ap=lerp(0.4,0,u);
+  corte(0,G1,{lineaAmbar:1,girado:ease((t-1.1)/1.3)});
+  marcaAA(1,ap);
+  if(ap>0){rotulosII(null,ap,lerp(1,0,u));textosIII(null,ap*0.75);textosIV(null,ap);}
   vistaFrontal(th,0,GF1,{lineaAmbar:1});
   var fa=clamp((t-1.0)/0.8,0,1);
   flechaArco(EVX,EVY,EVRP+40,-1.0,-1.0+1.5*fa,{color:P.ambar,w:2.2,seed:330,frac:fa>0?1:0,alpha:fa});
@@ -435,36 +438,36 @@ function escOtra(t){
 }
 /* VIII — Las cuentas (la misma hoja, 900 px más abajo) */
 function escCuentas(t){
-  var P=PLANO,dy=900*ease(t/0.9),OY=900,i,j;
+  var P=PLANO,dy=900*ease(t/0.8),OY=900,i,j;
   ctx.drawImage(laminaAlta(P),0,-dy);
   ctx.save();ctx.translate(0,-dy);
-  if(dy<900)dibujoVII(null,0.4);
+  if(dy<900)dibujoVII(null,1);   // es la misma hoja: el corte se va por arriba, entero
   var X0=330,X1=1270,Y0=150+OY,ST=14,CX=[450,630,810,990,1170];
-  var fl=clamp((t-0.8)/1.0,0,1),pts=[],x;
+  var fl=clamp((t-0.35)/1.0,0,1),pts=[],x;
   function top(xx){var y=0;for(var k=0;k<5;k++){var dx=Math.abs(xx-CX[k]),yc=ST*BIT[k],yy=dx<=28?yc:yc-(dx-28);if(yy>y)y=yy;}
     if(xx>X1-30){var yt=(xx-(X1-30))*1.1;if(yt>y)y=yt;}return y;}
   for(x=X0;x<=X1;x+=8)pts.push([x,Y0+top(x)]);
   pts.push([X1,Y0+top(X1)]);pts.push([X1,Y0+82]);pts.push([X1-16,Y0+100]);pts.push([X0,Y0+100]);
   pts.push([X0-6,Y0+118]);pts.push([X0-40,Y0+148]);pts.push([X0-104,Y0+150]);pts.push([X0-146,Y0+112]);pts.push([X0-148,Y0-12]);
   pts.push([X0-112,Y0-50]);pts.push([X0-44,Y0-52]);pts.push([X0-8,Y0-22]);pts.push([X0,Y0]);
-  relleno(pts,{color:P.ambar,alpha:0.9*clamp(fl*1.3-0.3,0,1),seed:360,amp:0.9,step:12});
+  relleno(pts,{color:P.ambar,alpha:0.9*clamp(fl*2.5-1.5,0,1),seed:360,amp:0.9,step:12});
   trazo(pts,{color:P.tinta,w:2,close:true,seed:361,frac:fl,step:12});
   circulo(X0-84,Y0+50,18,{color:P.tinta,w:1.6,seed:362,frac:clamp(fl*1.5-0.5,0,1)});
-  for(i=0;i<5;i++)texto(String(BIT[i]),CX[i],Y0+172,44,{color:P.ambar,align:'c',seed:370+i,frac:clamp((t-1.2-i*0.25)/0.5,0,1)});
-  texto('CÓDIGO',CX[0]-80,Y0+174,22,{color:P.dim,align:'r',seed:369,frac:clamp((t-1.1)/0.6,0,1)});
-  var GY=360+OY,GS=46,fg=clamp((t-1.4)/1.0,0,1);
+  for(i=0;i<5;i++)texto(String(BIT[i]),CX[i],Y0+172,44,{color:P.ambar,align:'c',seed:370+i,frac:clamp((t-1.0-i*0.25)/0.5,0,1)});
+  texto('CÓDIGO',CX[0]-80,Y0+174,22,{color:P.dim,align:'r',seed:369,frac:clamp((t-0.9)/0.6,0,1)});
+  var GY=360+OY,GS=46,fg=clamp((t-1.2)/1.0,0,1);
   for(j=0;j<6;j++){var y=GY+j*GS;
     trazo([[CX[0]-60,y],[CX[4]+60,y]],{color:P.dim,w:1.1,seed:380+j,alpha:0.7,frac:clamp(fg*1.5-j*0.1,0,1),step:30});
-    texto(String(j+1),CX[0]-80,y+8,22,{color:P.dim,align:'r',seed:390+j,frac:clamp(fg*1.5-j*0.1,0,1)});}
-  texto('ALTURA',CX[0]-150,GY+2.5*GS,20,{color:P.dim,align:'c',rot:-1.5708,seed:399,frac:clamp((t-1.3)/0.6,0,1)});
+    texto(String(j+1),CX[0]-80,y-11,22,{color:P.dim,align:'r',seed:390+j,frac:clamp(fg*1.5-j*0.1,0,1)});}
+  texto('ALTURA',CX[0]-150,GY+2.5*GS,20,{color:P.dim,align:'c',rot:-1.5708,seed:399,frac:clamp((t-1.1)/0.6,0,1)});
   for(i=0;i<5;i++)trazo([[CX[i],GY-10],[CX[i],GY+5*GS+10]],{color:P.dim,w:1.1,seed:400+i,alpha:0.5,frac:clamp(fg*1.5-i*0.1,0,1),step:30});
-  for(i=0;i<5;i++){var fm=clamp((t-2.3-i*0.15)/0.4,0,1);if(fm>0){var y2=GY+(BIT[i]-1)*GS;
+  for(i=0;i<5;i++){var fm=clamp((t-2.0-i*0.15)/0.4,0,1);if(fm>0){var y2=GY+(BIT[i]-1)*GS;
     ctx.save();ctx.globalAlpha=fm;ctx.fillStyle=P.ambar;ctx.beginPath();ctx.arc(CX[i],y2,9,0,6.2832);ctx.fill();ctx.restore();
     circulo(CX[i],y2,14,{color:P.tinta,w:1.4,seed:410+i,frac:fm});}}
-  texto('ESTA LLAVE: 6 ALTURAS POR PIN',800,660+OY,36,{color:P.tinta,align:'c',seed:420,frac:clamp((t-2.4)/ESCR(29),0,1)});
-  texto('6×6×6×6×6 = 7776 LLAVES',800,722+OY,40,{color:P.tinta,align:'c',seed:421,frac:clamp((t-3.6)/ESCR(23),0,1),pasadas:2});
-  texto('UNA SOLA ALINEA LOS CINCO',800,786+OY,36,{color:P.ambar,align:'c',seed:422,frac:clamp((t-4.6)/ESCR(25),0,1),pasadas:2});
-  texto('(EN TEORÍA)',800,844+OY,22,{color:P.dim,align:'c',seed:423,frac:clamp((t-5.2)/ESCR(11),0,1)});
+  texto('ESTA LLAVE: 6 ALTURAS POR PIN',800,660+OY,36,{color:P.tinta,align:'c',seed:420,frac:clamp((t-2.1)/ESCR(29),0,1)});
+  texto('6×6×6×6×6 = 7776 LLAVES',800,722+OY,40,{color:P.tinta,align:'c',seed:421,frac:clamp((t-3.1)/ESCR(23),0,1),pasadas:2});
+  texto('UNA SOLA ALINEA LOS CINCO',800,786+OY,36,{color:P.ambar,align:'c',seed:422,frac:clamp((t-4.0)/ESCR(25),0,1),pasadas:2});
+  texto('(EN TEORÍA)',800,844+OY,22,{color:P.dim,align:'c',seed:423,frac:clamp((t-4.7)/ESCR(11),0,1)});
   ctx.restore();
 }
 /* IX — Cierre */
@@ -542,12 +545,12 @@ var TL=[
   golpe(A(6,3.75));ev(A(6,4.1),'lapiz',0,0.3,0.35);ev(A(6,4.3),'lapiz',0,0.3,0.35);
   ev(A(6,0.5),'lapiz',0,1.3,0.3);ev(A(6,3.0),'lapiz',0,1.8,0.3);
   // VIII — las cuentas: la cámara baja, la escala de las seis alturas, el código, 7776
-  ev(A(7,0.0),'hoja',0,0.9,0.7);ev(A(7,0.8),'lapiz',0,1.0,0.35);
-  for(i=0;i<5;i++){nota(A(7,1.2+i*0.25),BIT[i],0.16);ev(A(7,1.2+i*0.25),'tic',2400,0.04,0.2);}
-  for(i=0;i<6;i++)nota(A(7,1.5+i*0.15),i+1,0.1);
-  for(i=0;i<5;i++)ev(A(7,2.3+i*0.15),'tic',2200,0.04,0.25);
-  ev(A(7,2.4),'lapiz',0,1.6,0.3);ev(A(7,3.6),'lapiz',0,1.4,0.3);ev(A(7,4.9),'campana',880,1.6,0.14);
-  ev(A(7,4.6),'lapiz',0,1.5,0.3);ev(A(7,5.2),'lapiz',0,0.9,0.25);
+  ev(A(7,0.0),'hoja',0,0.8,0.7);ev(A(7,0.35),'lapiz',0,1.0,0.35);
+  for(i=0;i<5;i++){nota(A(7,1.0+i*0.25),BIT[i],0.16);ev(A(7,1.0+i*0.25),'tic',2400,0.04,0.2);}
+  for(i=0;i<6;i++)nota(A(7,1.3+i*0.15),i+1,0.1);
+  for(i=0;i<5;i++)ev(A(7,2.0+i*0.15),'tic',2200,0.04,0.25);
+  ev(A(7,2.1),'lapiz',0,1.6,0.3);ev(A(7,3.1),'lapiz',0,1.4,0.3);ev(A(7,4.3),'campana',880,1.6,0.14);
+  ev(A(7,4.0),'lapiz',0,1.5,0.3);ev(A(7,4.7),'lapiz',0,0.9,0.25);
   // IX — cierre: la melodía de la llave y el acorde
   ev(A(8,0.0),'hoja',0,0.5,1);ev(A(8,0.0),'bajo',55,5.6,0.10);
   for(i=0;i<5;i++)nota(A(8,0.4+i*0.32),BIT[i],0.2);
